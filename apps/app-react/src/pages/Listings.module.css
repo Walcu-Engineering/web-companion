@@ -1,0 +1,388 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+/* Breadcrumb */
+.breadcrumbBar {
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumbContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 16px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+}
+
+.breadcrumbLink {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.breadcrumbLink:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbSep {
+  color: #bbb;
+}
+
+.breadcrumbCurrent {
+  color: var(--text-muted);
+}
+
+/* Layout */
+.layout {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
+  position: relative;
+}
+
+/* Mobile filter bar */
+.mobileFilterBar {
+  display: none;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.filterToggleBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s;
+}
+
+.filterToggleBtn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.filterIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.filterBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background: var(--brand);
+  border-radius: 50%;
+}
+
+.mobileCount {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Sidebar wrapper */
+.sidebarWrapper {
+  /* desktop: just a grid column */
+}
+
+.sidebarClose {
+  display: none;
+}
+
+.sidebarOverlay {
+  display: none;
+}
+
+/* Main content */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mainHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+
+.pageTitle {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.resultsCount {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.resultsCount strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.sortWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sortLabel {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.sortSelect {
+  height: 36px;
+  padding: 0 28px 0 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: border-color 0.15s;
+}
+
+.sortSelect:focus {
+  border-color: var(--brand);
+}
+
+/* Active filter chips */
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: #fff0ed;
+  color: var(--brand);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1.5px solid var(--brand);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.filterChip:hover {
+  background: #ffe0d9;
+}
+
+.chipClose {
+  width: 10px;
+  height: 10px;
+}
+
+.clearAllChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: #f5f5f5;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.clearAllChip:hover {
+  background: #eee;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Empty state */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  gap: 16px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  color: #ccc;
+}
+
+.emptyTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emptyText {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 320px;
+}
+
+.emptyBtn {
+  padding: 10px 24px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 8px;
+}
+
+.emptyBtn:hover {
+  background: var(--brand-dark);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .mobileFilterBar {
+    display: flex;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 16px;
+  }
+
+  .sidebarWrapper {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 200;
+    width: 300px;
+    overflow-y: auto;
+    background: var(--bg-white);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+    padding-top: 48px;
+  }
+
+  .sidebarVisible {
+    display: block;
+  }
+
+  .sidebarClose {
+    display: flex;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .sidebarClose button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--text-secondary);
+  }
+
+  .sidebarClose svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .sidebarOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 199;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mainHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sortWrapper {
+    width: 100%;
+  }
+
+  .sortSelect {
+    flex: 1;
+  }
+}

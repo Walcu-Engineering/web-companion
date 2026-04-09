@@ -1,0 +1,464 @@
+.main {
+  min-height: 100vh;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(232,64,28,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,100,50,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 64px 16px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.heroAccent {
+  color: var(--brand-light);
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+  max-width: 380px;
+}
+
+.heroForm {
+  /* The form's own white background + shadow stand out */
+}
+
+/* Stats banner */
+.statsBanner {
+  position: relative;
+  background: rgba(0,0,0,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+}
+
+.statsContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 40px;
+  gap: 4px;
+}
+
+.statNumber {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.statDivider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+/* General section */
+.section {
+  padding: 56px 0;
+}
+
+.sectionGray {
+  background: #f0f0f0;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.sectionLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: none;
+  transition: gap 0.15s;
+}
+
+.sectionLink:hover {
+  gap: 8px;
+}
+
+.sectionLinkIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Body type grid */
+.bodyTypeGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.bodyTypeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 12px;
+  background: var(--bg-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.bodyTypeCard:hover {
+  border-color: var(--brand);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.bodyTypeIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.bodyTypeLabel {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.bodyTypeCount {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Cars grid */
+.carsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Recent grid (4-col) */
+.recentGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Brands grid */
+.brandsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.brandCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.brandCard:hover {
+  border-color: var(--brand);
+  transform: translateX(2px);
+}
+
+.brandInitial {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brandInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.brandName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.brandCount {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.brandArrow {
+  width: 16px;
+  height: 16px;
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+/* CTA Banner */
+.ctaBanner {
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  padding: 56px 0;
+}
+
+.ctaContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.ctaText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ctaTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.ctaSubtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.ctaActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ctaBtnPrimary {
+  padding: 14px 28px;
+  background: #fff;
+  color: var(--brand);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.ctaBtnPrimary:hover {
+  background: #f0f0f0;
+}
+
+.ctaBtnSecondary {
+  padding: 14px 28px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: border-color 0.15s;
+  white-space: nowrap;
+}
+
+.ctaBtnSecondary:hover {
+  border-color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .carsGrid,
+  .recentGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .brandsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .heroContent {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 16px 40px;
+    text-align: center;
+  }
+
+  .heroSubtitle {
+    max-width: none;
+  }
+
+  .heroTitle {
+    font-size: 2.4rem;
+  }
+
+  .bodyTypeGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .statsBanner .stat {
+    padding: 16px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carsGrid,
+  .recentGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brandsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bodyTypeGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .statsContainer {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .statDivider {
+    display: none;
+  }
+
+  .stat {
+    padding: 12px 20px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .carsGrid,
+  .recentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .bodyTypeGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brandsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaContainer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ctaActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .ctaBtnPrimary,
+  .ctaBtnSecondary {
+    text-align: center;
+  }
+}

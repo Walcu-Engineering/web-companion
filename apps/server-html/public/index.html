@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>coches.net — Compra y venta de coches de segunda mano</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">coches<span>.net</span></a>
+
+      <div class="header-search">
+        <input type="text" placeholder="Busca marca, modelo, versión...">
+        <button type="button" aria-label="Buscar">&#9906;</button>
+      </div>
+
+      <nav class="header-nav">
+        <a href="index.html" data-page="index.html">Inicio</a>
+        <a href="listings.html" data-page="listings.html">Coches</a>
+        <a href="listings.html?tipo=motos" data-page="">Motos</a>
+        <a href="listings.html?tipo=furgonetas" data-page="">Furgonetas</a>
+        <a href="#" class="btn-login">Acceder</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PROMO BANNER -->
+  <div class="promo-banner">
+    ¡Publica tu coche gratis y llega a millones de compradores!
+    <a href="#">Publicar anuncio</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1 class="hero-title">Encuentra tu coche ideal</h1>
+    <p class="hero-subtitle">Más de <strong>850.000 anuncios</strong> de coches de segunda mano en España</p>
+
+    <form class="search-form-hero" id="heroSearchForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="heroMarca">Marca</label>
+          <select id="heroMarca" name="marca">
+            <option value="">Todas las marcas</option>
+            <option value="Audi">Audi</option>
+            <option value="BMW">BMW</option>
+            <option value="Citroën">Citroën</option>
+            <option value="Ford">Ford</option>
+            <option value="Hyundai">Hyundai</option>
+            <option value="Kia">Kia</option>
+            <option value="Mercedes-Benz">Mercedes-Benz</option>
+            <option value="Opel">Opel</option>
+            <option value="Peugeot">Peugeot</option>
+            <option value="Renault">Renault</option>
+            <option value="SEAT">SEAT</option>
+            <option value="Toyota">Toyota</option>
+            <option value="Volkswagen">Volkswagen</option>
+            <option value="Volvo">Volvo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="heroModelo">Modelo</label>
+          <select id="heroModelo" name="modelo">
+            <option value="">Todos los modelos</option>
+            <option value="A3">A3</option>
+            <option value="A4">A4</option>
+            <option value="Golf">Golf</option>
+            <option value="Ibiza">Ibiza</option>
+            <option value="León">León</option>
+            <option value="Mégane">Mégane</option>
+            <option value="Polo">Polo</option>
+            <option value="Series 3">Series 3</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="heroPrecio">Precio máximo</label>
+          <select id="heroPrecio" name="precio_max">
+            <option value="">Sin límite</option>
+            <option value="5000">Hasta 5.000 €</option>
+            <option value="8000">Hasta 8.000 €</option>
+            <option value="10000">Hasta 10.000 €</option>
+            <option value="15000">Hasta 15.000 €</option>
+            <option value="20000">Hasta 20.000 €</option>
+            <option value="30000">Hasta 30.000 €</option>
+            <option value="50000">Hasta 50.000 €</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="heroAnio">Año mínimo</label>
+          <select id="heroAnio" name="anio_min">
+            <option value="">Cualquier año</option>
+            <option value="2020">Desde 2020</option>
+            <option value="2018">Desde 2018</option>
+            <option value="2016">Desde 2016</option>
+            <option value="2014">Desde 2014</option>
+            <option value="2012">Desde 2012</option>
+            <option value="2010">Desde 2010</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="heroKm">Km máximo</label>
+          <select id="heroKm" name="km_max">
+            <option value="">Sin límite</option>
+            <option value="10000">Hasta 10.000 km</option>
+            <option value="30000">Hasta 30.000 km</option>
+            <option value="50000">Hasta 50.000 km</option>
+            <option value="80000">Hasta 80.000 km</option>
+            <option value="100000">Hasta 100.000 km</option>
+            <option value="150000">Hasta 150.000 km</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn-search-hero">
+        <span>&#9906;</span> Buscar coches
+      </button>
+    </form>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">850.000+</div>
+        <div class="hero-stat-label">Anuncios activos</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">12.000+</div>
+        <div class="hero-stat-label">Concesionarios</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">desde</div>
+        <div class="hero-stat-num">1.500 €</div>
+        <div class="hero-stat-label">Precio más bajo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED CARS -->
+  <main>
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Ofertas <span>destacadas</span></h2>
+        <a href="listings.html" class="section-link">Ver todos los coches ›</a>
+      </div>
+
+      <div class="cars-grid">
+
+        <!-- Card 1 -->
+        <article class="car-card" data-href="detail.html">
+          <div class="car-card-img">
+            <img src="https://placehold.co/400x250/e8e8e8/999?text=Audi+A4" alt="Audi A4 2.0 TDI" loading="lazy">
+            <span class="car-badge">Destacado</span>
+            <button class="car-fav" aria-label="Guardar en favoritos">&#9825;</button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-title">Audi A4 2.0 TDI S line</h3>
+            <div class="car-specs">
+              <span class="car-spec">2019</span>
+              <span class="car-spec">87.500 km</span>
+              <span class="car-spec">Diésel</span>
+            </div>
+            <div class="car-price">18.500 €<small>Precio negociable</small></div>
+          </div>
+          <div class="car-card-footer">
+            <span class="car-location"><span class="car-location-icon">&#9679;</span> Madrid</span>
+            <span class="car-date">Hoy</span>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="car-card" data-href="detail.html">
+          <div class="car-card-img">
+            <img src="https://placehold.co/400x250/e8e8e8/999?text=BMW+320d" alt="BMW 320d" loading="lazy">
+            <span class="car-badge car-badge-pro">Pro</span>
+            <button class="car-fav" aria-label="Guardar en favoritos">&#9825;</button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-title">BMW 320d xDrive Touring</h3>
+            <div class="car-specs">
+              <span class="car-spec">2021</span>
+              <span class="car-spec">45.200 km</span>
+              <span class="car-spec">Diésel</span>
+            </div>
+            <div class="car-price">29.900 €<small>IVA deducible</small></div>
+          </div>
+          <div class="car-card-footer">
+            <span class="car-location"><span class="car-location-icon">&#9679;</span> Barcelona</span>
+            <span class="car-date">Ayer</span>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="car-card" data-href="detail.html">
+          <div class="car-card-img">
+            <img src="https://placehold.co/400x250/e8e8e8/999?text=SEAT+León" alt="SEAT León" loading="lazy">
+            <button class="car-fav" aria-label="Guardar en favoritos">&#9825;</button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-title">SEAT León 1.5 TSI FR</h3>
+            <div class="car-specs">
+              <span class="car-spec">2020</span>
+              <span class="car-spec">62.000 km</span>
+              <span class="car-spec">Gasolina</span>
+            </div>
+            <div class="car-price">17.200 €</div>
+          </div>
+          <div class="car-card-footer">
+            <span class="car-location"><span class="car-location-icon">&#9679;</span> Valencia</span>
+            <span class="car-date">Hace 2 días</span>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="car-card" data-href="detail.html">
+          <div class="car-card-img">
+            <img src="https://placehold.co/400x250/e8e8e8/999?text=VW+Golf" alt="Volkswagen Golf" loading="lazy">
+            <span class="car-badge">Oferta</span>
+            <button class="car-fav" aria-label="Guardar en favoritos">&#9825;</button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-title">Volkswagen Golf 2.0 TDI R-Line</h3>
+            <div class="car-specs">
+              <span class="car-spec">2018</span>
+              <span class="car-spec">110.300 km</span>
+              <span class="car-spec">Diésel</span>
+            </div>
+            <div class="car-price">14.750 €<small>Financiación disponible</small></div>
+          </div>
+          <div class="car-card-footer">
+            <span class="car-location"><span class="car-location-icon">&#9679;</span> Sevilla</span>
+            <span class="car-date">Hace 3 días</span>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="car-card" data-href="detail.html">
+          <div class="car-card-img">
+            <img src="https://placehold.co/400x250/e8e8e8/999?text=Renault+Mégane" alt="Renault Mégane" loading="lazy">
+            <button class="car-fav" aria-label="Guardar en favoritos">&#9825;</button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-title">Renault Mégane 1.5 dCi Zen</h3>
+            <div class="car-specs">
+              <span class="car-spec">2017</span>
+              <span class="car-spec">95.800 km</span>
+              <span class="car-spec">Diésel</span>
+            </div>
+            <div class="car-price">10.400 €</div>
+          </div>
+          <div class="car-card-footer">
+            <span class="car-location"><span class="car-location-icon">&#9679;</span> Bilbao</span>
+            <span class="car-date">Hace 4 días</span>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="car-card" data-href="detail.html">
+          <div class="car-card-img">
+            <img src="https://placehold.co/400x250/e8e8e8/999?text=Ford+Focus" alt="Ford Focus" loading="lazy">
+            <span class="car-badge car-badge-pro">Pro</span>
+            <button class="car-fav" aria-label="Guardar en favoritos">&#9825;</button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-title">Ford Focus 1.0 EcoBoost ST-Line</h3>
+            <div class="car-specs">
+              <span class="car-spec">2022</span>
+              <span class="car-spec">28.600 km</span>
+              <span class="car-spec">Gasolina</span>
+            </div>
+            <div class="car-price">21.900 €<small>IVA incluido</small></div>
+          </div>
+          <div class="car-card-footer">
+            <span class="car-location"><span class="car-location-icon">&#9679;</span> Zaragoza</span>
+            <span class="car-date">Hoy</span>
+          </div>
+        </article>
+
+      </div><!-- /cars-grid -->
+    </div>
+
+    <!-- MARCAS POPULARES -->
+    <div class="section" style="padding-top:0;">
+      <div class="section-header">
+        <h2 class="section-title">Buscar por <span>marca</span></h2>
+        <a href="listings.html" class="section-link">Todas las marcas ›</a>
+      </div>
+
+      <div class="brands-grid">
+        <a href="listings.html?marca=Audi" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=AU" alt="Audi">
+          <span class="brand-name">Audi</span>
+          <span class="brand-count">42.180</span>
+        </a>
+        <a href="listings.html?marca=BMW" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=BMW" alt="BMW">
+          <span class="brand-name">BMW</span>
+          <span class="brand-count">38.940</span>
+        </a>
+        <a href="listings.html?marca=Mercedes-Benz" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=MB" alt="Mercedes-Benz">
+          <span class="brand-name">Mercedes-Benz</span>
+          <span class="brand-count">35.210</span>
+        </a>
+        <a href="listings.html?marca=Volkswagen" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=VW" alt="Volkswagen">
+          <span class="brand-name">Volkswagen</span>
+          <span class="brand-count">72.540</span>
+        </a>
+        <a href="listings.html?marca=SEAT" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=SEAT" alt="SEAT">
+          <span class="brand-name">SEAT</span>
+          <span class="brand-count">68.320</span>
+        </a>
+        <a href="listings.html?marca=Renault" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=RE" alt="Renault">
+          <span class="brand-name">Renault</span>
+          <span class="brand-count">61.850</span>
+        </a>
+        <a href="listings.html?marca=Ford" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=FORD" alt="Ford">
+          <span class="brand-name">Ford</span>
+          <span class="brand-count">54.760</span>
+        </a>
+        <a href="listings.html?marca=Toyota" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=TO" alt="Toyota">
+          <span class="brand-name">Toyota</span>
+          <span class="brand-count">29.480</span>
+        </a>
+        <a href="listings.html?marca=Peugeot" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=PEU" alt="Peugeot">
+          <span class="brand-name">Peugeot</span>
+          <span class="brand-count">48.120</span>
+        </a>
+        <a href="listings.html?marca=Citroën" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=CIT" alt="Citroën">
+          <span class="brand-name">Citroën</span>
+          <span class="brand-count">44.900</span>
+        </a>
+        <a href="listings.html?marca=Opel" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=OP" alt="Opel">
+          <span class="brand-name">Opel</span>
+          <span class="brand-count">39.670</span>
+        </a>
+        <a href="listings.html?marca=Hyundai" class="brand-item">
+          <img class="brand-logo" src="https://placehold.co/48x48/ffffff/555?text=HY" alt="Hyundai">
+          <span class="brand-name">Hyundai</span>
+          <span class="brand-count">26.340</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">coches.net</div>
+        <p class="footer-tagline">El portal líder en compraventa de coches de segunda mano en España. Encuentra tu próximo coche entre miles de anuncios.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Twitter">t</a>
+          <a href="#" aria-label="Instagram">in</a>
+          <a href="#" aria-label="YouTube">yt</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Comprar</h4>
+        <ul>
+          <li><a href="listings.html">Coches de segunda mano</a></li>
+          <li><a href="listings.html?tipo=km0">Coches km 0</a></li>
+          <li><a href="listings.html">Coches baratos</a></li>
+          <li><a href="listings.html?combustible=electrico">Coches eléctricos</a></li>
+          <li><a href="listings.html?combustible=hibrido">Coches híbridos</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Vender</h4>
+        <ul>
+          <li><a href="#">Publicar anuncio gratis</a></li>
+          <li><a href="#">Tasar mi coche</a></li>
+          <li><a href="#">Consejos para vender</a></li>
+          <li><a href="#">Trámites de venta</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Contacto</a></li>
+          <li><a href="#">Cómo funciona</a></li>
+          <li><a href="#">Financiación</a></li>
+          <li><a href="#">Seguros</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2024 coches.net &mdash; Todos los derechos reservados</span>
+      <div class="footer-legal">
+        <a href="#">Aviso legal</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Cookies</a>
+        <a href="#">Condiciones de uso</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

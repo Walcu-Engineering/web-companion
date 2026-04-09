@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audi A4 2.0 TDI S line 150cv — coches.net</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Detail-only extras */
+    .detail-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--brand);
+      display: inline-block;
+    }
+
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .equipment-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .equipment-item::before {
+      content: '✓';
+      color: var(--brand);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .similar-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    .alert-box {
+      background: rgba(232,64,28,0.06);
+      border: 1px solid rgba(232,64,28,0.2);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alert-icon { font-size: 18px; }
+
+    .share-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .share-bar span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .share-btn {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-white);
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: border-color var(--transition);
+    }
+
+    .share-btn:hover { border-color: var(--brand); color: var(--brand); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      transition: color var(--transition);
+    }
+
+    .back-link:hover { color: var(--brand-dark); }
+
+    .info-block {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">coches<span>.net</span></a>
+
+      <div class="header-search">
+        <input type="text" placeholder="Busca marca, modelo, versión...">
+        <button type="button" aria-label="Buscar">&#9906;</button>
+      </div>
+
+      <nav class="header-nav">
+        <a href="index.html" data-page="index.html">Inicio</a>
+        <a href="listings.html" data-page="listings.html">Coches</a>
+        <a href="listings.html?tipo=motos">Motos</a>
+        <a href="listings.html?tipo=furgonetas">Furgonetas</a>
+        <a href="#" class="btn-login">Acceder</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="index.html">Inicio</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="listings.html">Coches de segunda mano</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="listings.html?marca=Audi">Audi</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Audi A4 2.0 TDI S line</span>
+  </nav>
+
+  <!-- DETAIL LAYOUT -->
+  <div class="detail-wrapper">
+
+    <!-- MAIN COLUMN -->
+    <main class="detail-main">
+
+      <a href="listings.html" class="back-link">&#8592; Volver al listado</a>
+
+      <!-- GALLERY -->
+      <div class="detail-gallery">
+        <img
+          id="mainDetailImg"
+          class="detail-img-main"
+          src="https://placehold.co/800x450/e8e8e8/999?text=Audi+A4+2.0+TDI"
+          alt="Audi A4 2.0 TDI S line - foto principal"
+        >
+        <div class="detail-thumbnails">
+          <div class="detail-thumb active-thumb">
+            <img src="https://placehold.co/200x130/e8e8e8/999?text=Foto+1" alt="Foto 1">
+          </div>
+          <div class="detail-thumb">
+            <img src="https://placehold.co/200x130/ddeeff/777?text=Foto+2" alt="Foto 2">
+          </div>
+          <div class="detail-thumb">
+            <img src="https://placehold.co/200x130/eeeedd/777?text=Foto+3" alt="Foto 3">
+          </div>
+          <div class="detail-thumb">
+            <img src="https://placehold.co/200x130/ffeeee/777?text=Foto+4" alt="Foto 4">
+          </div>
+          <div class="detail-thumb">
+            <img src="https://placehold.co/200x130/eeffee/777?text=Foto+5" alt="Foto 5">
+          </div>
+          <div class="detail-thumb">
+            <img src="https://placehold.co/200x130/ffe8e8/999?text=Foto+6" alt="Foto 6">
+          </div>
+        </div>
+      </div>
+
+      <!-- SHARE BAR -->
+      <div class="share-bar">
+        <span>Compartir:</span>
+        <button class="share-btn">&#128279; Copiar enlace</button>
+        <button class="share-btn">&#128236; WhatsApp</button>
+        <button class="share-btn">f Facebook</button>
+        <button class="share-btn">&#9825; Guardar favorito</button>
+      </div>
+
+      <!-- TITLE & BASIC INFO -->
+      <div class="detail-info">
+        <h1 class="detail-title">Audi A4 2.0 TDI 150cv S line</h1>
+        <p class="detail-subtitle">Berlina &middot; 2019 &middot; Automático 7 vel. &middot; 87.500 km &middot; Diésel</p>
+
+        <div class="detail-tags">
+          <span class="detail-tag">&#128205; Madrid Capital</span>
+          <span class="detail-tag">Particular</span>
+          <span class="detail-tag">&#10003; ITV en vigor</span>
+          <span class="detail-tag">&#10003; Historial disponible</span>
+          <span class="detail-tag">Euro 6</span>
+        </div>
+      </div>
+
+      <!-- SPECS TABLE -->
+      <div class="info-block">
+        <div class="detail-section-title">Ficha técnica</div>
+        <table class="specs-table">
+          <tbody>
+            <tr>
+              <th>Marca</th>
+              <td>Audi</td>
+            </tr>
+            <tr>
+              <th>Modelo</th>
+              <td>A4 Berlina</td>
+            </tr>
+            <tr>
+              <th>Versión</th>
+              <td>2.0 TDI 150cv S line</td>
+            </tr>
+            <tr>
+              <th>Año de matriculación</th>
+              <td>2019 (junio)</td>
+            </tr>
+            <tr>
+              <th>Kilómetros</th>
+              <td>87.500 km</td>
+            </tr>
+            <tr>
+              <th>Combustible</th>
+              <td>Diésel</td>
+            </tr>
+            <tr>
+              <th>Cambio</th>
+              <td>Automático de doble embrague (S tronic 7 vel.)</td>
+            </tr>
+            <tr>
+              <th>Potencia</th>
+              <td>150 CV (110 kW)</td>
+            </tr>
+            <tr>
+              <th>Cilindrada</th>
+              <td>1.968 cc</td>
+            </tr>
+            <tr>
+              <th>Tracción</th>
+              <td>Delantera</td>
+            </tr>
+            <tr>
+              <th>Carrocería</th>
+              <td>Berlina 4 puertas</td>
+            </tr>
+            <tr>
+              <th>Color</th>
+              <td>Gris Nardo</td>
+            </tr>
+            <tr>
+              <th>Puertas</th>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th>Plazas</th>
+              <td>5</td>
+            </tr>
+            <tr>
+              <th>Garantía</th>
+              <td>12 meses (ampliable)</td>
+            </tr>
+            <tr>
+              <th>Etiqueta ambiental</th>
+              <td>C (DGT)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="info-block">
+        <div class="detail-section-title">Descripción del vendedor</div>
+        <div class="detail-description">
+          <p>Vendo Audi A4 2.0 TDI 150cv en versión S line, con acabados deportivos de serie: parrilla tipo panal, faldones laterales, retrovisores en negro y volante multifunción en cuero.</p>
+          <br>
+          <p>El coche está en perfecto estado, revisiones al día en concesionario oficial Audi. Dispone de todos los libros de mantenimiento y la última revisión fue realizada a los 85.000 km (correa de distribución cambiada). ITV pasada en enero de 2024 sin defectos.</p>
+          <br>
+          <p>Equipamiento destacado: navegador MMI con Apple CarPlay y Android Auto, sensores de aparcamiento delanteros y traseros, cámara de marcha atrás, asientos delanteros calefactados, iluminación ambiental, faros LED Matrix, llantas de 18" en aleación.</p>
+          <br>
+          <p>Precio negociable para compra al contado. Se admite parte de pago. Posibilidad de financiación a través de entidad colaboradora.</p>
+        </div>
+      </div>
+
+      <!-- EQUIPMENT -->
+      <div class="info-block">
+        <div class="detail-section-title">Equipamiento</div>
+        <div class="equipment-grid">
+          <span class="equipment-item">Aire acondicionado</span>
+          <span class="equipment-item">Climatizador bizona</span>
+          <span class="equipment-item">Navegador GPS</span>
+          <span class="equipment-item">Apple CarPlay</span>
+          <span class="equipment-item">Android Auto</span>
+          <span class="equipment-item">Bluetooth</span>
+          <span class="equipment-item">Sensores aparcamiento</span>
+          <span class="equipment-item">Cámara trasera</span>
+          <span class="equipment-item">Faros LED Matrix</span>
+          <span class="equipment-item">Llantas 18 pulgadas</span>
+          <span class="equipment-item">Asientos calefactados</span>
+          <span class="equipment-item">Volante multifunción</span>
+          <span class="equipment-item">Control de crucero</span>
+          <span class="equipment-item">Arranque sin llave</span>
+          <span class="equipment-item">Apertura sin llave</span>
+          <span class="equipment-item">Alerta de carril</span>
+          <span class="equipment-item">Control de velocidad</span>
+          <span class="equipment-item">Freno de mano elec.</span>
+          <span class="equipment-item">Head-up display</span>
+          <span class="equipment-item">Techo panorámico</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="detail-sidebar">
+
+      <div class="price-card">
+        <div class="price-card-price">
+          18.500 €
+          <small>Precio del anunciante</small>
+        </div>
+        <div class="price-card-finance">
+          Desde <strong>289 €/mes</strong> con financiación
+        </div>
+
+        <div class="alert-box">
+          <span class="alert-icon">&#128200;</span>
+          <span>Precio por debajo de la media del mercado para este modelo</span>
+        </div>
+
+        <button class="btn-contact" id="contactBtn">
+          &#9993; Contactar al vendedor
+        </button>
+        <button class="btn-call" id="callBtn">
+          &#128222; Ver teléfono
+        </button>
+
+        <div class="dealer-card">
+          <h4>Vendedor</h4>
+          <div class="dealer-name">Carlos M. (Particular)</div>
+          <div class="dealer-location">&#128205; Madrid Capital, Madrid</div>
+          <div class="dealer-rating">
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <span>4.2 (18 valoraciones)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick summary card -->
+      <div class="price-card" style="position:static;">
+        <div style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; color:var(--text-muted); margin-bottom:14px;">
+          Resumen
+        </div>
+        <table style="width:100%; font-size:13px; border-collapse:collapse;">
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 0; color:var(--text-muted);">Año</td>
+            <td style="padding:8px 0; font-weight:600; text-align:right;">2019</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 0; color:var(--text-muted);">Kilómetros</td>
+            <td style="padding:8px 0; font-weight:600; text-align:right;">87.500 km</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 0; color:var(--text-muted);">Combustible</td>
+            <td style="padding:8px 0; font-weight:600; text-align:right;">Diésel</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 0; color:var(--text-muted);">Potencia</td>
+            <td style="padding:8px 0; font-weight:600; text-align:right;">150 CV</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0; color:var(--text-muted);">Cambio</td>
+            <td style="padding:8px 0; font-weight:600; text-align:right;">Automático</td>
+          </tr>
+        </table>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- SIMILAR CARS -->
+  <section class="similar-section">
+    <div class="section-header">
+      <h2 class="section-title">Coches <span>similares</span></h2>
+      <a href="listings.html?marca=Audi" class="section-link">Ver más Audi ›</a>
+    </div>
+
+    <div class="cars-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+      <article class="car-card" data-href="detail.html">
+        <div class="car-card-img">
+          <img src="https://placehold.co/400x250/e8e8e8/999?text=Audi+A4+2.0" alt="Audi A4 2.0 TDI" loading="lazy">
+          <button class="car-fav">&#9825;</button>
+        </div>
+        <div class="car-card-body">
+          <h3 class="car-title">Audi A4 2.0 TDI 190cv Avant</h3>
+          <div class="car-specs">
+            <span class="car-spec">2020</span>
+            <span class="car-spec">62.100 km</span>
+            <span class="car-spec">Diésel</span>
+          </div>
+          <div class="car-price">21.500 €</div>
+        </div>
+        <div class="car-card-footer">
+          <span class="car-location"><span class="car-location-icon">&#9679;</span> Madrid</span>
+          <span class="car-date">Hoy</span>
+        </div>
+      </article>
+
+      <article class="car-card" data-href="detail.html">
+        <div class="car-card-img">
+          <img src="https://placehold.co/400x250/e8e8e8/999?text=Audi+A4+S4" alt="Audi A4 S-line" loading="lazy">
+          <button class="car-fav">&#9825;</button>
+        </div>
+        <div class="car-card-body">
+          <h3 class="car-title">Audi A4 3.0 TDI 272cv Quattro</h3>
+          <div class="car-specs">
+            <span class="car-spec">2018</span>
+            <span class="car-spec">101.400 km</span>
+            <span class="car-spec">Diésel</span>
+          </div>
+          <div class="car-price">23.900 €</div>
+        </div>
+        <div class="car-card-footer">
+          <span class="car-location"><span class="car-location-icon">&#9679;</span> Barcelona</span>
+          <span class="car-date">Ayer</span>
+        </div>
+      </article>
+
+      <article class="car-card" data-href="detail.html">
+        <div class="car-card-img">
+          <img src="https://placehold.co/400x250/e8e8e8/999?text=Audi+A3" alt="Audi A3" loading="lazy">
+          <button class="car-fav">&#9825;</button>
+        </div>
+        <div class="car-card-body">
+          <h3 class="car-title">Audi A3 Sportback 35 TFSI S line</h3>
+          <div class="car-specs">
+            <span class="car-spec">2021</span>
+            <span class="car-spec">35.700 km</span>
+            <span class="car-spec">Gasolina</span>
+          </div>
+          <div class="car-price">26.800 €</div>
+        </div>
+        <div class="car-card-footer">
+          <span class="car-location"><span class="car-location-icon">&#9679;</span> Valencia</span>
+          <span class="car-date">Hace 2 días</span>
+        </div>
+      </article>
+
+      <article class="car-card" data-href="detail.html">
+        <div class="car-card-img">
+          <img src="https://placehold.co/400x250/e8e8e8/999?text=Audi+A6" alt="Audi A6" loading="lazy">
+          <button class="car-fav">&#9825;</button>
+        </div>
+        <div class="car-card-body">
+          <h3 class="car-title">Audi A6 40 TDI S line Avant</h3>
+          <div class="car-specs">
+            <span class="car-spec">2019</span>
+            <span class="car-spec">88.200 km</span>
+            <span class="car-spec">Diésel</span>
+          </div>
+          <div class="car-price">32.500 €</div>
+        </div>
+        <div class="car-card-footer">
+          <span class="car-location"><span class="car-location-icon">&#9679;</span> Sevilla</span>
+          <span class="car-date">Hace 3 días</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">coches.net</div>
+        <p class="footer-tagline">El portal líder en compraventa de coches de segunda mano en España.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Twitter">t</a>
+          <a href="#" aria-label="Instagram">in</a>
+          <a href="#" aria-label="YouTube">yt</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Comprar</h4>
+        <ul>
+          <li><a href="listings.html">Coches de segunda mano</a></li>
+          <li><a href="listings.html?tipo=km0">Coches km 0</a></li>
+          <li><a href="listings.html?combustible=electrico">Coches eléctricos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Vender</h4>
+        <ul>
+          <li><a href="#">Publicar anuncio gratis</a></li>
+          <li><a href="#">Tasar mi coche</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2024 coches.net &mdash; Todos los derechos reservados</span>
+      <div class="footer-legal">
+        <a href="#">Aviso legal</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
