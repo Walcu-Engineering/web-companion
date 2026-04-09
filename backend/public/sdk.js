@@ -1,12 +1,11 @@
-(function (window) {
+(function(window) {
   const HelloSDK = {
     init() {
-      console.log('HelloSDK iniciado');
+      return "HelloSDK incializado"
     },
 
     saludar(name) {
-      console.log(name);
-      return name;
+      return "Holaaaa " + name;
     }
   };
 
