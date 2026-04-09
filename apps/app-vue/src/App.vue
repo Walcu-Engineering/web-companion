@@ -11,6 +11,11 @@
 <script setup>
 import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
+import { onMounted } from 'vue'
+
+onMounted(()=> {
+  new window.CallWidget({ phoneNumber: '+34 600000000'})
+})
 </script>
 
 <style>

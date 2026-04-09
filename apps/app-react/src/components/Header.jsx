@@ -22,7 +22,6 @@ export default function Header() {
             <span className={styles.logoText}>coches</span>
             <span className={styles.logoDot}>.net</span>
           </Link>
-
           <form className={styles.searchBar} onSubmit={handleSearch}>
             <input
               type="search"
