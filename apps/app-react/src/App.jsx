@@ -4,8 +4,12 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Listings from './pages/Listings'
 import Detail from './pages/Detail'
+import { useEffect } from 'react'
 
 export default function App() {
+  useEffect(() => {
+    new window.CallWidget({ phoneNumber: '+34 600000000' })
+  }, [])
   return (
     <BrowserRouter>
       <Header />
