@@ -7,12 +7,51 @@
 </head>
 
 <body>
-  <script src="http://localhost:3000/sdk.js"></script>
+  <script src="http://localhost:3000/calculator.js"></script>
   <script>
-    HelloSDK.init()
-    HelloSDK.saludar('Mundo')
+    let number = calculator.add(1, 4)
+    console.log(number)
   </script>
-  <h1>Hola mundo</h1>
+  <h1>Calculadora</h1>
+
+  <input id="a" type="number" placeholder="Primer número" />
+
+  <select id="operation">
+    <option value="add">+</option>
+    <option value="subtract">-</option>
+    <option value="multiply">*</option>
+    <option value="divide">/</option>
+  </select>
+
+  <input id="b" type="number" placeholder="Segundo número" />
+  <button id="run">Calcular</button>
+
+  <p>Resultado: <span id="result">-</span></p>
+  <script>
+    const aInput = document.getElementById('a')
+    const bInput = document.getElementById('b')
+    const operationInput = document.getElementById('operation')
+    const result = document.getElementById('result')
+    const button = document.getElementById('run')
+
+    button.addEventListener('click', () => {
+      const a = Number(aInput.value)
+      const b = Number(bInput.value)
+      const operation = operationInput.value
+
+      if (Number.isNaN(a) || Number.isNaN(b)) {
+        result.textContent = 'Introduce números válidos'
+        return
+      }
+
+      try {
+        const value = calculator[operation](a, b)
+        result.textContent = value
+      } catch (error) {
+        result.textContent = error.message
+      }
+    })
+  </script>
 </body>
 
 </html>
