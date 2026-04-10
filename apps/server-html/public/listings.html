@@ -560,7 +560,12 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/UICallWidget.js"></script>
+  <script src="js/CallWidget.js"></script>
   <script>
+    new window.UICallWidget()
+    new window.CallWidget()
+
     // Show mobile filter button on small screens
     if (window.innerWidth <= 768) {
       document.getElementById('toggleFilters').style.display = 'block';

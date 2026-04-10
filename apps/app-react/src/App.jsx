@@ -8,7 +8,8 @@ import { useEffect } from 'react'
 
 export default function App() {
   useEffect(() => {
-    new window.UICallWidget({ phoneNumber: '+34 600000000' })
+    new window.UICallWidget()
+    new window.CallWidget()
   }, [])
   return (
     <BrowserRouter>

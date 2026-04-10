@@ -1,5 +1,6 @@
 class UICallWidget {
   constructor(config = {}) {
+    this.phoneNumber = config.phoneNumber || '+34000000000';
     this.color = config.color || '#25D366';
     this.position = config.position || 'bottom-right';
 
@@ -69,7 +70,7 @@ class UICallWidget {
       </style>
 
       <!-- HTML AISLADO -->
-      <button class="widget-btn" title="Llámanos">
+      <button class="widget-btn" href="tel:${this.phoneNumber}" title="Llámanos">
         <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
         </svg>
@@ -167,7 +168,11 @@ class UICallWidget {
 
     const actionBtn = shadow.querySelector('.action-btn')
 
-    actionBtn.addEventListener('click', () => console.log('action!'))
+    // to connect both SDK, we use window.dispatchEvent
+    // the other SDK only connect to the event
+    actionBtn.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('sdk:call-requested'))
+    })
 
     document.body.appendChild(this.modalHost)
   }
