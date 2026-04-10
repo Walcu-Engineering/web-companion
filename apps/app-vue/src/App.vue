@@ -14,7 +14,7 @@ import AppFooter from './components/AppFooter.vue'
 import { onMounted } from 'vue'
 
 onMounted(()=> {
-  new window.CallWidget({ phoneNumber: '+34 600000000'})
+  new window.UICallWidget({ phoneNumber: '+34 600000000'})
 })
 </script>
 

@@ -1,4 +1,4 @@
-class CallWidgetSDK {
+class UICallWidget {
   constructor(config = {}) {
     this.phoneNumber = config.phoneNumber || '+34000000000';
     this.color = config.color || '#25D366';
@@ -170,4 +170,4 @@ class CallWidgetSDK {
     this.modalHost.style.display = this.isModalOpen ? 'block' : 'none';
   }
 }
-window.CallWidget = CallWidgetSDK
+window.UICallWidget = UICallWidget

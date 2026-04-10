@@ -1,4 +1,4 @@
-class CallWidgetSDK {
+class UICallWidget {
   constructor(config = {}) {
     this.phoneNumber = config.phoneNumber || '+34000000000';
     this.color = config.color || '#25D366';
@@ -129,18 +129,21 @@ class CallWidgetSDK {
         h2 { margin: 0 0 8px 0; font-size: 20px; color: #1a1a1a; }
         p { margin: 0 0 24px 0; font-size: 14px; color: #666; line-height: 1.5; }
         
-        .action-link {
+        .action-btn {
           display: block;
+          margin: 0 auto;
           background-color: ${this.color};
           color: #ffffff;
           text-decoration: none;
           padding: 12px 24px;
+          border: none;
           border-radius: 8px;
           font-weight: 600;
           font-size: 16px;
+          cursor: pointer;
           transition: filter 0.2s;
         }
-        .action-link:hover { filter: brightness(0.9); }
+        .action-btn:hover { filter: brightness(0.9); }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -155,13 +158,17 @@ class CallWidgetSDK {
           </button>
           <h2>¿Hablamos?</h2>
           <p>Pulsa el botón inferior para iniciar la llamada directamente.</p>
-          <a href="tel:${this.phoneNumber}" class="action-link">Llamar ahora</a>
+          <button class="action-btn">Llamar ahora</button>
         </div>
     `
     const closeBtn = shadow.querySelector('.close-btn')
 
     // close on click at x
     closeBtn.addEventListener('click', () => this.toggleModal(false));
+
+    const actionBtn = shadow.querySelector('.action-btn')
+
+    actionBtn.addEventListener('click', () => console.log('action!'))
 
     document.body.appendChild(this.modalHost)
   }
@@ -170,5 +177,5 @@ class CallWidgetSDK {
     this.modalHost.style.display = this.isModalOpen ? 'block' : 'none';
   }
 }
-window.CallWidget = CallWidgetSDK
+window.UICallWidget = UICallWidget
 
