@@ -1,24 +1,49 @@
-require('dotenv').config()
+import 'dotenv/config'
 import express from 'express'
-import AccessToken from 'twilio/lib/jwt/AccessToken'
-const twilio = require('twilio')
+
+import twilio from 'twilio'
+
+const AccessToken = twilio.jwt.AccessToken
+const VoiceGrant = AccessToken.VoiceGrant
+import { randomUUID } from 'crypto'
+
+
 const app = express()
 const PORT = process.env.PORT || 4000
 
-// Allow requests by CORS
+// Allow cross-origin requests from the SDK injected in the frontend
+// TODO: filter by CORS (restrict origin to some domain)
 app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
 
 app.get('/token', (_req, res) => {
-  const ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID
-  const authToken = process.env.TWILIO_AUTH_TOKEN
 
-  // create identity on server?
+  // build the base JWT signed with our API KEY + SECRET
   const token = new AccessToken(
-    ACCOUNT_SID
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_API_KEY,
+    process.env.TWILIO_API_SECRET,
+    {
+      identity: `anon-${randomUUID()}`,
+      ttl: 3600
+    }
   )
+
+  // grant outgoing call permissions via TwiML App
+  // incomingAllow: false - SDK does not recieve calls
+  const grant = new VoiceGrant({
+    outgoingApplicationSid:
+      process.env.TWILIO_TWIML_APP_SID,
+    incomingAllow: false
+  })
+
+  token.addGrant(grant)
+
+  // return the serialized JWT to the SDK
+  res.json({ token: token.toJwt() })
+
 })
 
 app.listen(PORT, () => {

@@ -55,7 +55,7 @@ UICallWidget  --[sdk:call-requested event]-->  CallWidget  --[GET /token]-->  to
 
 The three apps (`app-react`, `app-vue`, `server-html`) are parallel implementations of the same coches.net-inspired UI. They share the same mock car data structure (`cars.js`). Changes to the UI design should be applied consistently across all three.
 
-- `server-html` copies SDK files into `public/js/` — when `packages/sdk-*` files change, update the copies there too
+- `server-html` serves SDKs directly from `packages/` via Express routes — no manual copying needed
 - React and Vue apps import the SDKs directly from `packages/`
 
 ### Token server
