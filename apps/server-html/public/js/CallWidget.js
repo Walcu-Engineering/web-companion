@@ -4,8 +4,8 @@ class CallWidget {
     this._activeCall = null
     this._config = {}
     this._refreshTimer = null
-
-    window.addEventListener('sdk:call-requested', () => console.log('Hola!'))
   }
 }
+
+window.addEventListener('sdk:call-requested', () => console.log('Hola!'))
 window.CallWidget = CallWidget
