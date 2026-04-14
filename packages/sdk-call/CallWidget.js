@@ -51,19 +51,17 @@ class CallWidget {
   async _handleCallRequested() {
     if (this._activeCall) return
 
-    // if the device doesn't exists initDevice and dispatchEvent (UI listen and modify modal)
     if (!this._device) {
       try {
         await this._initDevice()
-        window.dispatchEvent(new CustomEvent('sdk:call-connecting'))
       } catch (e) {
-        console.warn('error' + e)
-        // on error dispach event
+        console.warn('Error inicializando device', e)
         window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }))
-
         return
       }
     }
+
+    window.dispatchEvent(new CustomEvent('sdk:call-connecting'))
 
 
     try {
