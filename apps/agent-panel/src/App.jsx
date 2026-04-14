@@ -1,3 +1,16 @@
+import ActiveCall from "./components/ActiveCall";
+import IdleScreen from "./components/IdleScreen";
+import IncomingCall from "./components/IncomingCall";
+import { useTwilioDevice } from "./hooks/useTwilioDevice";
+
 export default function App() {
-  return <h1>Panel de Agente</h1>
+  const { status, accept, reject, hangUp } = useTwilioDevice()
+
+  return (
+    <div>
+      {status === 'idle' && <IdleScreen />}
+      {status === 'ringing' && <IncomingCall onAccept={accept} onReject={reject} />}
+      {status === 'in-call' && <ActiveCall onHangUp={hangUp} />}
+    </div>
+  )
 }
