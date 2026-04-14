@@ -38,8 +38,6 @@ class CallWidget {
     const token = await this.fetchToken()
     this._device = new Twilio.Device(token, { logLevel: 1 })
 
-    console.log(this._device)
-
     this._device.on('tokenWillExpire', async () => {
       try {
         const newToken = await this.fetchToken()
@@ -50,14 +48,58 @@ class CallWidget {
     })
   }
 
+  async _handleCallRequested() {
+    if (this._activeCall) return
 
+    // if the device doesn't exists initDevice and dispatchEvent (UI listen and modify modal)
+    if (!this._device) {
+      try {
+        await this._initDevice()
+        window.dispatchEvent(new CustomEvent('sdk:call-connecting'))
+      } catch (e) {
+        console.warn('error' + e)
+        // on error dispach event
+        window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }))
+
+        return
+      }
+    }
+
+    try {
+      this._activeCall = await this._device.connect()
+
+      // the other person accepted the call, new state
+      this._activeCall.on('accept', () => {
+        window.dispatchEvent(new CustomEvent('sdk:call-started'))
+      })
+
+      // the other person or the client disconnected
+      this._activeCall.on('disconnect', () => {
+        window.dispatchEvent(new CustomEvent('sdk:call-ended'))
+        this._activeCall = null
+      })
+
+      // some error on the call, alert UI
+      this._activeCall.on('error', (e) => {
+        window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }))
+        this._activeCall = null
+      })
+    } catch (e) {
+      window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }))
+    }
+  }
+
+
+  hangUp() {
+    if (this._activeCall) this._activeCall.disconnect()
+  }
 
 }
 
-window.addEventListener('sdk:call-requested', async () => {
-  const widget = new CallWidget()
-  widget._initDevice()
-  console.log('inicializado')
-})
+const _instance = new CallWidget()
+
+window.addEventListener('sdk:call-requested', () => _instance._handleCallRequested())
+
+window.addEventListener('sdk:hangup-requested', () => _instance.hangUp())
 
 window.CallWidget = CallWidget

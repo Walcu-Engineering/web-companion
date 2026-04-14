@@ -183,3 +183,9 @@ class UICallWidget {
 }
 window.UICallWidget = UICallWidget
 
+window.addEventListener('sdk:call-connecting', () => {
+  console.log('call connecting')
+})
+
+
+
