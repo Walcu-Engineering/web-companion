@@ -1,6 +1,5 @@
 class UICallWidget {
   constructor(config = {}) {
-    this.phoneNumber = config.phoneNumber || '+34000000000';
     this.color = config.color || '#25D366';
     this.position = config.position || 'bottom-right';
     this._callState = 'idle'
@@ -99,7 +98,7 @@ class UICallWidget {
       </style>
 
       <!-- HTML AISLADO -->
-      <button class="widget-btn" href="tel:${this.phoneNumber}" title="Llámanos">
+      <button class="widget-btn"  title="Llámanos">
         <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
         </svg>
@@ -278,6 +277,9 @@ class UICallWidget {
 
     this._actionBtn = shadow.querySelector('.action-btn')
 
+    this._modalTitle = shadow.querySelector('h2')
+    this._modalText = shadow.querySelector('p')
+
     // to connect both SDK, we use window.dispatchEvent
     // the other SDK only connect to the event
     this._actionBtn.addEventListener('click', () => {
@@ -310,6 +312,8 @@ class UICallWidget {
     btn.className = 'action-btn'
 
     if (state === 'idle') {
+      this._modalTitle.textContent = '¿Hablamos'
+      this._modalText.textContent = 'Pulsa el botón inferior para iniciar la llamada.'
       btn.innerHTML = `
         <svg viewBox="0 0 24 24">
           <path d="M6.62
@@ -324,6 +328,8 @@ class UICallWidget {
       `
       btn.disabled = false
     } else if (state === 'connecting') {
+      this._modalTitle.textContent = 'Conectando...'
+      this._modalText.textContent = 'Estableciendo conexión. Espere...'
       btn.classList.add('action-btn--connecting')
       btn.innerHTML = `
         <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4
@@ -337,6 +343,8 @@ class UICallWidget {
       `
       btn.disabled = true
     } else if (state === 'in-call') {
+      this._modalTitle.textContent = 'En llamada'
+      this._modalText.textContent = 'Pulsa Colgar para finalizar'
       btn.classList.add('action-btn--in-call')
       btn.innerHTML = `
          <svg viewBox="0 0 24 24"><path d="M12 9c-1.6
@@ -353,6 +361,8 @@ class UICallWidget {
       `
       btn.disabled = false
     } else if (state === 'error') {
+      this._modalTitle.textContent = 'Error en llamada'
+      this._modalText.textContent = 'No se pudo establecer conexión'
       btn.classList.add('action-btn--error')
       btn.innerHTML = `
         <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2
