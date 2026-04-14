@@ -18,7 +18,12 @@ class UICallWidget {
 
   createPhoneButton() {
     // avoid duplicate injections if case
-    if (document.getElementById('sdk-phone-button')) return;
+    const existing = document.getElementById('sdk-phone-button')
+    if (existing) {
+      this._floatBtn = existing.shadowRoot.querySelector('.widget-btn')
+      this._floatIcon = existing.shadowRoot.querySelector('.icon')
+      return
+    }
 
     // Create the private DOM host in the normal DOM
     // We create a shadow-root in this host
@@ -125,21 +130,21 @@ class UICallWidget {
       1.02l-2.2 2.2z"/>`
 
     const hangupIcon = `<path d="M12 9c-1.6
-      0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87
-      1.12-2.66 1.84-.18.18-.43.28-.69.28-.28
-      0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.67
-      0-.25.11-.49.29-.67C3.34 8.78 7.46 7 12 7s8.66 1.78
-      11.71 4.74c.18.18.29.42.29.67 0
-      .25-.11.49-.29.67l-2.49 2.49c-.18.18-.43.29-.71.29-.26
-      0-.51-.1-.69-.28-.79-.72-1.68-1.35-2.67-1.84-.33-.16-
-      .56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/>`
+    0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87
+    1.12-2.66 1.84-.18.18-.43.28-.69.28-.28
+    0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.67
+    0-.25.11-.49.29-.67C3.34 8.78 7.46 7 12 7s8.66 1.78
+    11.71 4.74c.18.18.29.42.29.67 0
+    .25-.11.49-.29.67l-2.49
+  2.49c-.18.18-.43.29-.71.29-.26
+    0-.51-.1-.69-.28-.79-.72-1.68-1.35-2.67-1.84-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/>`
 
     if (state === 'idle') {
       icon.innerHTML = phoneIcon
     } else if (state === 'connecting') {
       btn.classList.add('widget-btn--connecting')
     } else if (state === 'in-call') {
-      btn.callList.add('widget-btn--in-call')
+      btn.classList.add('widget-btn--in-call')
       icon.innerHTML = hangupIcon
     } else if (state === 'error') {
       btn.classList.add('widget-btn--error')
@@ -332,7 +337,7 @@ class UICallWidget {
       `
       btn.disabled = true
     } else if (state === 'in-call') {
-      btn.callList.add('action-btn--in-call')
+      btn.classList.add('action-btn--in-call')
       btn.innerHTML = `
          <svg viewBox="0 0 24 24"><path d="M12 9c-1.6
           0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87
