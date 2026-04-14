@@ -1,3 +1,8 @@
 export default function IdleScreen() {
-  return <p>Esperando llamada...</p>
+  return (
+    <>
+      <h2>Panel de agente</h2>
+      <p>Esperando llamada...</p>
+    </>
+  )
 }

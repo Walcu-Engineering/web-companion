@@ -1,9 +1,11 @@
 export default function IncomingCall({ onAccept, onReject }) {
   return (
-    <div>
-      <p>Llamada entrante</p>
-      <button onCLick={onAccept}>Aceptar</button>
-      <button onCLick={onReject}>Rechazar</button>
-    </div>
+    <>
+      <h2>Llamada entrante</h2>
+      <div className="actions">
+        <button className="btn-accept" onClick={onAccept}>Aceptar</button>
+        <button className="btn-reject" onClick={onReject}>Rechazar</button>
+      </div>
+    </>
   )
 }

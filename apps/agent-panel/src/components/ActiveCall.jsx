@@ -1,8 +1,8 @@
 export default function ActiveCall({ onHangUp }) {
   return (
-    <div>
-      <p>En llamada</p>
-      <button onClick={onHangUp}>Colgar</button>
-    </div>
+    <>
+      <h2>En llamada</h2>
+      <button className="btn-hangup" onClick={onHangUp}>Colgar</button>
+    </>
   )
 }

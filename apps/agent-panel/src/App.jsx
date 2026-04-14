@@ -7,8 +7,8 @@ export default function App() {
   const { status, accept, reject, hangUp } = useTwilioDevice()
 
   return (
-    <div>
-      {status === 'idle' && <IdleScreen />}
+    <div className="panel">
+      {status === 'idle'    && <IdleScreen />}
       {status === 'ringing' && <IncomingCall onAccept={accept} onReject={reject} />}
       {status === 'in-call' && <ActiveCall onHangUp={hangUp} />}
     </div>
