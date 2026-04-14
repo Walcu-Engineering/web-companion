@@ -65,6 +65,7 @@ class CallWidget {
       }
     }
 
+
     try {
       this._activeCall = await this._device.connect()
 
