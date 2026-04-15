@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
-
+import { MongoClient } from 'mongodb'
 import twilio from 'twilio'
 
 const AccessToken = twilio.jwt.AccessToken
@@ -11,11 +11,47 @@ import { randomUUID } from 'crypto'
 const app = express()
 const PORT = process.env.PORT || 4000
 
-// Allow cross-origin requests from the SDK injected in the frontend
-// TODO: filter by CORS (restrict origin to some domain)
-app.use((_req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
+const mongoCLient = new MongoClient(
+  `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@localhost:27017/${process.env.MONGO_DB}`
+)
+let db
+mongoCLient.connect().then(() => {
+  db = mongoCLient.db(process.env.MONGO_DB)
+})
+
+// Allow cross-origin requests only for domains registered in DB
+app.use(async (req, res, next) => {
+  const origin = req.headers.origin
+  if (!origin) return next()
+
+  let hostname
+  try { hostname = new URL(origin).hostname } catch { return next() }
+
+  const client = await db.collection('users').findOne({ domain: hostname, active: true })
+  if (client) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Vary', 'Origin')
+  }
   next()
+})
+
+app.get('/verify/:clientId', async (req, res) => {
+  const origin = req.headers.origin || req.headers.referer || ''
+  const hostname = new URL(origin).hostname
+  const { clientId } = req.params
+
+  const client = await db.collection('users').findOne({ clientId })
+
+  if (!client || client.domain !== hostname) {
+    return res.status(403).json({ error: 'Unauthorized' })
+  }
+
+  const sessionToken = jwt.sign(
+    { clientId, domain: hostname, scope: 'session' },
+    process.env.PRIVATE_KEY,
+    { expiresIn: '10m' }
+  )
+  res.json({ sessionToken })
 })
 
 app.get('/token', (_req, res) => {

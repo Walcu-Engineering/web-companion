@@ -70,8 +70,15 @@ class CallWidget {
       this._activeCall = await this._device.connect()
 
       console.log('active call connected, waiting to accept')
-      // the other person accepted the call, new state
+      // the call is ringing on the agent's side
+      this._activeCall.on('ringing', () => {
+        console.log('ringing')
+        window.dispatchEvent(new CustomEvent('sdk:call-ringing'))
+      })
+
+      // the agent accepted (answered) the call
       this._activeCall.on('accept', () => {
+        console.log('accepted')
         window.dispatchEvent(new CustomEvent('sdk:call-started'))
       })
 
