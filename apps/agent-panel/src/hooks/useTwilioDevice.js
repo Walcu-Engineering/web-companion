@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Device } from "@twilio/voice-sdk";
 
 export function useTwilioDevice() {
-  const BACKEND_URL = "http://localhost:3002/token";
+  const BACKEND_URL = "http://localhost:4000/token";
 
   const [status, setStatus] = useState("idle");
   const callRef = useRef(null);

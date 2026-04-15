@@ -36,10 +36,12 @@ class CallWidget {
   async _initDevice() {
     await this._loadTwilioSDK()
     const token = await this.fetchToken()
-    this._device = new Twilio.Device(token, { logLevel: 1 })
+    this._device = new Twilio.Device(token)
 
+    console.log('device init')
     this._device.on('tokenWillExpire', async () => {
       try {
+        console.log('token expired updating...')
         const newToken = await this.fetchToken()
         this._device.updateToken(newToken)
       } catch (e) {
@@ -67,6 +69,7 @@ class CallWidget {
     try {
       this._activeCall = await this._device.connect()
 
+      console.log('active call connected, waiting to accept')
       // the other person accepted the call, new state
       this._activeCall.on('accept', () => {
         window.dispatchEvent(new CustomEvent('sdk:call-started'))
