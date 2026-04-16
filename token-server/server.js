@@ -24,7 +24,7 @@ const app = express()
 const PORT = process.env.PORT || 4000
 
 const mongoCLient = new MongoClient(
-  `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@localhost:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`
+  `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@127.0.0.1:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`
 )
 let db
 mongoCLient.connect().then(() => {
@@ -48,8 +48,12 @@ app.use(async (req, res, next) => {
 
   if (client) {
     res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     res.setHeader('Vary', 'Origin')
   }
+
+  if (req.method === 'OPTIONS') return res.status(204).end()
 
   next()
 })
@@ -153,10 +157,14 @@ app.get('/token', verifyAccessToken, (_req, res) => {
 
 })
 
-app.get('/widget/:clientId/CallWidget.js', (req, res) => {
+app.get('/widget/:clientId/CallWidget.js', async (req, res) => {
   const { clientId } = req.params
-  const sdk = readFileSync(join(__dirname,
-    '../packages/sdk-call/CallWidget.js'), 'utf8')
+
+  const client = await db.collection('users').findOne({ _id: clientId, active: true })
+  if (!client) return res.status(403).end()
+
+  const sdk = readFileSync(join(__dirname, '../packages/sdk-call/CallWidget.js'), 'utf8')
+  res.setHeader('Cache-Control', 'public, max-age=300')
   res.type('application/javascript')
   res.send(`window.__CALL_WIDGET_CLIENT_ID__ = '${clientId}';\n${sdk}`)
 })

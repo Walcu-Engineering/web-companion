@@ -28,7 +28,7 @@ class CallWidget {
 
     const { accessToken, refreshToken } = await res.json()
     this._accessToken = accessToken
-    this.refreshToken = refreshToken
+    this._refreshToken = refreshToken
 
     this._scheduleRefresh()
 
@@ -41,7 +41,7 @@ class CallWidget {
 
   async _refreshAccessToken() {
     try {
-      const res = await fetch(`$SERVER_URL}/auth/refresh`, {
+      const res = await fetch(`${SERVER_URL}/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken: this._refreshToken })
@@ -165,7 +165,7 @@ class CallWidget {
 }
 
 const _instance = new CallWidget()
-
+_instance.verify().catch(e => console.warn(e))
 window.addEventListener('sdk:call-requested', () => _instance._handleCallRequested())
 
 window.addEventListener('sdk:hangup-requested', () => _instance.hangUp())
