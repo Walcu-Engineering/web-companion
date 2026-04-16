@@ -4,13 +4,13 @@ import IncomingCall from "./components/IncomingCall";
 import { useTwilioDevice } from "./hooks/useTwilioDevice";
 
 export default function App() {
-  const { status, accept, reject, hangUp } = useTwilioDevice()
+  const { status, callParams, accept, reject, hangUp } = useTwilioDevice()
 
   return (
     <div className="panel">
-      {status === 'idle'    && <IdleScreen />}
-      {status === 'ringing' && <IncomingCall onAccept={accept} onReject={reject} />}
-      {status === 'in-call' && <ActiveCall onHangUp={hangUp} />}
+      {status === 'idle' && <IdleScreen />}
+      {status === 'ringing' && <IncomingCall onAccept={accept} onReject={reject} dealer={callParams?.dealer} visitorId={callParams?.visitorId} />}
+      {status === 'in-call' && <ActiveCall onHangUp={hangUp} dealer={callParams?.dealer} visitorId={callParams?.visitorId} />}
     </div>
   )
 }

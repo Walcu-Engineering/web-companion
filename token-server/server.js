@@ -129,7 +129,8 @@ app.post('/auth/refresh', (req, res) => {
   }
 })
 
-app.get('/token', verifyAccessToken, (_req, res) => {
+app.get('/token', verifyAccessToken, (req, res) => {
+  const visitorId = req.query.visitorId || randomUUID()
 
   // build the base JWT signed with API KEY + SECRET
   const token = new AccessToken(
@@ -137,7 +138,7 @@ app.get('/token', verifyAccessToken, (_req, res) => {
     process.env.TWILIO_API_KEY,
     process.env.TWILIO_API_SECRET,
     {
-      identity: `${req.auth.clientId}-${randomUUID()}`,
+      identity: `${req.auth.clientId}__${visitorId}`,
       ttl: 3600
     }
   )

@@ -72,7 +72,8 @@ class CallWidget {
   }
 
   async fetchToken() {
-    const res = await fetch(TOKEN_SERVER_URL, {
+    const visitorId = getOrCreateVisitorId()
+    const res = await fetch(`${TOKEN_SERVER_URL}?visitorId=${visitorId}`, {
       headers: { 'Authorization': `Bearer ${this._accessToken}` }
     })
 
