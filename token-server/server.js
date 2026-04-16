@@ -41,7 +41,50 @@ app.use(async (req, res, next) => {
   next()
 })
 
-app.get('/token', (_req, res) => {
+function verifyAccessToken(req, res, next) {
+  const auth = req.headers.authorization || ''
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null
+
+  if (!token) return res.status(401).json({ error: 'Missing access token' })
+
+  try {
+    req.auth = jwt.verify(token, process.env.PRIVATE_KEY)
+    next()
+  } catch {
+    res.status(401).json({ error: 'Invalid or expired access token' })
+  }
+}
+
+app.post('/auth', async (req, res) => {
+  const { clientId } = req.body
+  const origin = req.headers.origin || req.headers.referer || ''
+
+  let hostname
+  try {
+    hostname = new URL(origin).hostname
+  } catch {
+    return res.status(400).json({ error: 'Bad request' })
+  }
+
+  const client = await db.collection('users').findOne({ _id: clientId, active: true })
+  if (!client || !client.allowedDomains.inclued(hostname)) {
+    return res.status(403).json({ error: 'Unauthorized' })
+  }
+
+  const accessToken = jwt.sign({
+    clientId,
+    domain: hostname,
+    scope: 'call-access',
+  },
+    process.env.PRIVATE_KEY,
+    {
+      expiresIn: '10m'
+    }
+  )
+  res.json({ accessToken })
+})
+
+app.get('/token', verifyAccessToken, (_req, res) => {
 
   // build the base JWT signed with our API KEY + SECRET
   const token = new AccessToken(
