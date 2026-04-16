@@ -9,8 +9,12 @@ class CallWidget {
   constructor() {
     this._device = null
     this._activeCall = null
+
     this._sdkLoading = null
-    this._sessionToken = null
+
+    this._accessToken = null
+    this._refreshToken = null
+    this._refreshTimer = null
   }
 
   async verify() {
@@ -22,13 +26,49 @@ class CallWidget {
 
     if (!res.ok) throw new Error('SDK auth failed')
 
-    const { accessToken } = await res.json()
+    const { accessToken, refreshToken } = await res.json()
     this._accessToken = accessToken
+    this.refreshToken = refreshToken
 
+    this._scheduleRefresh()
 
   }
+
+  _scheduleRefresh() {
+    clearTimeout(this._refreshTimer)
+    this._refreshTimer = setTimeout(() => this._refreshAccessToken(), 1000 * 570)
+  }
+
+  async _refreshAccessToken() {
+    try {
+      const res = await fetch(`$SERVER_URL}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken: this._refreshToken })
+      })
+      if (!res.ok) {
+        // refreshToken expied, requested auth
+        return this.verify()
+      }
+      const { accessToken } = await res.json()
+      this._accessToken = accessToken
+      this._scheduleRefresh()
+    } catch (e) {
+      console.warn('Token refresh failed', e)
+    }
+  }
+
   async fetchToken() {
-    const res = await fetch(TOKEN_SERVER_URL)
+    const res = await fetch(TOKEN_SERVER_URL, {
+      headers: { 'Authorization': `Bearer ${this._accessToken}` }
+    })
+
+    // 401 token expired just need to refresh accessToken
+    if (res.status === 401) {
+      await this._refreshAccessToken()
+      // recall with the new accessToken!
+      return this.fetchToken()
+    }
     const { token } = await res.json()
 
     return token
