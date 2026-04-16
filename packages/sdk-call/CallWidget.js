@@ -1,4 +1,6 @@
-const TOKEN_SERVER_URL = 'http://localhost:4000/token'
+const SERVER_URL = 'http://localhost:4000'
+const TOKEN_SERVER_URL = SERVER_URL + '/token'
+const VERIFY_URL = SERVER_URL + '/verify'
 const TWILIO_SDK_URL = 'https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2/dist/twilio.min.js'
 
 class CallWidget {
@@ -6,6 +8,17 @@ class CallWidget {
     this._device = null
     this._activeCall = null
     this._sdkLoading = null
+    this._sessionToken = null
+  }
+
+  async verify() {
+    const dealerId = new URL(window.location.href).searchParams.get('dealerId')
+    if (!dealerId) return false
+
+    const res = await fetch(`${VERIFY_URL}/${dealerId}`)
+    if (!res.ok) return false
+
+    this._sessionToken = await res.json()
   }
 
   async fetchToken() {
