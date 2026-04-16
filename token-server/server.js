@@ -137,7 +137,7 @@ app.get('/token', verifyAccessToken, (_req, res) => {
     process.env.TWILIO_API_KEY,
     process.env.TWILIO_API_SECRET,
     {
-      identity: `anon-${randomUUID()}`,
+      identity: `${req.auth.clientId}-${randomUUID()}`,
       ttl: 3600
     }
   )

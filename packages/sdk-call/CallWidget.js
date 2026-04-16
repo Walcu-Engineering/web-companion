@@ -1,9 +1,22 @@
 const SERVER_URL = 'http://localhost:4000'
 const TOKEN_SERVER_URL = SERVER_URL + '/token'
-const VERIFY_URL = SERVER_URL + '/verify'
 const TWILIO_SDK_URL = 'https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2/dist/twilio.min.js'
 
 const CLIENT_ID = window.__CALL_WIDGET_CLIENT_ID__ || null
+
+function getOrCreateVisitorId() {
+  const key = '_cwid'
+  const existing = document.cookie
+    .split('; ')
+    .find(r => r.startsWith(`${key}=`))
+    ?.split('=')[1]
+
+  if (existing) return existing
+
+  const id = crypto.randomUUID()
+  document.cookie = `${key}=${id}; max-age=31536000; path=/; SameSite=Strict`
+  return id
+}
 
 class CallWidget {
   constructor() {
@@ -126,7 +139,12 @@ class CallWidget {
 
 
     try {
-      this._activeCall = await this._device.connect()
+      this._activeCall = await this._device.connect({
+        params: {
+          clientId: CLIENT_ID,
+          visitorId: getOrCreateVisitorId()
+        }
+      })
 
       console.log('active call connected, waiting to accept')
       // the call is ringing on the agent's side
