@@ -1,8 +1,8 @@
 const SERVER_URL = 'http://localhost:4000'
-const TOKEN_SERVER_URL = SERVER_URL + '/token'
 const TWILIO_SDK_URL = 'https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2/dist/twilio.min.js'
 
 const CLIENT_ID = window.__CALL_WIDGET_CLIENT_ID__ || null
+const TOKEN_SERVER_URL = `${SERVER_URL}/${CLIENT_ID}/token`
 
 function getOrCreateVisitorId() {
   const key = '_cwid'
@@ -22,69 +22,14 @@ class CallWidget {
   constructor() {
     this._device = null
     this._activeCall = null
-
     this._sdkLoading = null
-
-    this._accessToken = null
-    this._refreshToken = null
-    this._refreshTimer = null
-  }
-
-  async verify() {
-    const res = await fetch(`${SERVER_URL}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clientId: CLIENT_ID })
-    })
-
-    if (!res.ok) throw new Error('SDK auth failed')
-
-    const { accessToken, refreshToken } = await res.json()
-    this._accessToken = accessToken
-    this._refreshToken = refreshToken
-
-    this._scheduleRefresh()
-
-  }
-
-  _scheduleRefresh() {
-    clearTimeout(this._refreshTimer)
-    this._refreshTimer = setTimeout(() => this._refreshAccessToken(), 1000 * 570)
-  }
-
-  async _refreshAccessToken() {
-    try {
-      const res = await fetch(`${SERVER_URL}/auth/refresh`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refreshToken: this._refreshToken })
-      })
-      if (!res.ok) {
-        // refreshToken expied, requested auth
-        return this.verify()
-      }
-      const { accessToken } = await res.json()
-      this._accessToken = accessToken
-      this._scheduleRefresh()
-    } catch (e) {
-      console.warn('Token refresh failed', e)
-    }
   }
 
   async fetchToken() {
     const visitorId = getOrCreateVisitorId()
-    const res = await fetch(`${TOKEN_SERVER_URL}?visitorId=${visitorId}`, {
-      headers: { 'Authorization': `Bearer ${this._accessToken}` }
-    })
-
-    // 401 token expired just need to refresh accessToken
-    if (res.status === 401) {
-      await this._refreshAccessToken()
-      // recall with the new accessToken!
-      return this.fetchToken()
-    }
+    const res = await fetch(`${TOKEN_SERVER_URL}?visitorId=${visitorId}`)
+    if (!res.ok) throw new Error('Token fetch failed')
     const { token } = await res.json()
-
     return token
   }
 
@@ -184,7 +129,6 @@ class CallWidget {
 }
 
 const _instance = new CallWidget()
-_instance.verify().catch(e => console.warn(e))
 window.addEventListener('sdk:call-requested', () => _instance._handleCallRequested())
 
 window.addEventListener('sdk:hangup-requested', () => _instance.hangUp())
