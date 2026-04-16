@@ -14,9 +14,7 @@ const { VoiceGrant } = AccessToken;
 
 const router = Router({ mergeParams: true });
 
-router.use(validateDealer)
-
-router.get('/token', (req, res) => {
+router.get('/token', validateDealer, (req, res) => {
   const visitorId = req.query.visitorId || randomUUID()
 
   const token = new AccessToken(
@@ -42,7 +40,7 @@ router.get('/widget/CallWidget.js', (req, res) => {
   const sdk = readFileSync(join(__dirname, '../../packages/sdk-call/CallWidget.js'), 'utf8')
   res.setHeader('Cache-Control', 'public, max-age=300')
   res.type('application/javascript')
-  res.send(`window.__CALL_WIDGET_CLIENT_ID__ = '${req.dealer._id}';\n${sdk}`)
+  res.send(`window.__CALL_WIDGET_CLIENT_ID__ = '${req.params.dealerId}';\n${sdk}`)
 })
 
 export default router
