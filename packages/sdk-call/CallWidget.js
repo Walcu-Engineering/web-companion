@@ -3,6 +3,8 @@ const TOKEN_SERVER_URL = SERVER_URL + '/token'
 const VERIFY_URL = SERVER_URL + '/verify'
 const TWILIO_SDK_URL = 'https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2/dist/twilio.min.js'
 
+const CLIENT_ID = window.__CALL_WIDGET_CLIENT_ID__ || null
+
 class CallWidget {
   constructor() {
     this._device = null
@@ -12,15 +14,19 @@ class CallWidget {
   }
 
   async verify() {
-    const dealerId = new URL(window.location.href).searchParams.get('dealerId')
-    if (!dealerId) return false
+    const res = await fetch(`${SERVER_URL}/auth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientId: CLIENT_ID })
+    })
 
-    const res = await fetch(`${VERIFY_URL}/${dealerId}`)
-    if (!res.ok) return false
+    if (!res.ok) throw new Error('SDK auth failed')
 
-    this._sessionToken = await res.json()
+    const { accessToken } = await res.json()
+    this._accessToken = accessToken
+
+
   }
-
   async fetchToken() {
     const res = await fetch(TOKEN_SERVER_URL)
     const { token } = await res.json()
