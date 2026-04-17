@@ -18,7 +18,7 @@ export async function validateDealer(req, res, next) {
     .collection("users")
     .findOne({ _id: dealerId, active: true });
 
-  if (!dealer || !dealer.allowedDomains.includes(hostname)) {
+  if (!dealer || !dealer.allowedDomains?.includes(hostname)) {
     return res.status(403).json({ error: "unauthorized" });
   }
 

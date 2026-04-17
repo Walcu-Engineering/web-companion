@@ -13,7 +13,15 @@ export function useTwilioDevice() {
     async function setup() {
       const res = await fetch(BACKEND_URL);
 
+      if (!res.ok) {
+        throw new Error("Error getting token");
+      }
+
       const { token } = await res.json();
+
+      if (!token) {
+        throw new Error("Token invalid or undefined");
+      }
 
       deviceRef.current = new Device(token);
 
@@ -71,6 +79,7 @@ export function useTwilioDevice() {
     callRef.current?.disconnect();
     callRef.current = null;
     setStatus("idle");
+    setCallParams(null);
   };
 
   return { status, callParams, accept, reject, hangUp };

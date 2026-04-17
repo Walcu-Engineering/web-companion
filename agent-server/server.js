@@ -20,7 +20,7 @@ app.get("/token", (_req, res) => {
     process.env.TWILIO_API_KEY,
     process.env.TWILIO_API_SECRET,
     {
-      // for the momento only one agent handle all the calls
+      // for the moment only one agent handles all the calls
       identity: "agent",
       ttl: 3600,
     },

@@ -24,6 +24,10 @@ class CallWidget {
     this._device = null;
     this._activeCall = null;
     this._sdkLoading = null;
+
+    if (!CLIENT_ID) {
+      throw new Error("Error injecting widget client id");
+    }
   }
 
   async fetchToken() {
