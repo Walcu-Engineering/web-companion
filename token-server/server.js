@@ -26,10 +26,18 @@ mongoClient
   .then(() => {
     db = mongoClient.db(process.env.MONGO_DB);
   })
-  .catch(() => console.log("error on mongo"));
+  .catch((err) => {
+    console.error("Mongo connection failed", err);
+    process.exit(1);
+  });
 
 app.use(express.json());
-app.options("*", (_req, res) => res.status(204).end());
+app.options("*", (_req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.status(204).end();
+});
 
 app.use("/:dealerId", dealerRouter);
 
