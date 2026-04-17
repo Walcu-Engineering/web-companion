@@ -1,15 +1,16 @@
-const SERVER_URL = 'http://localhost:4000';
-const TWILIO_SDK_URL = 'https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2/dist/twilio.min.js';
+const SERVER_URL = "http://localhost:4000";
+const TWILIO_SDK_URL =
+  "https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2/dist/twilio.min.js";
 
 const CLIENT_ID = window.__CALL_WIDGET_CLIENT_ID__ || null;
 const TOKEN_SERVER_URL = `${SERVER_URL}/${CLIENT_ID}/token`;
 
 function getOrCreateVisitorId() {
-  const key = '_cwid';
+  const key = "_cwid";
   const existing = document.cookie
-    .split('; ')
-    .find(r => r.startsWith(`${key}=`))
-    ?.split('=')[1];
+    .split("; ")
+    .find((r) => r.startsWith(`${key}=`))
+    ?.split("=")[1];
 
   if (existing) return existing;
 
@@ -28,7 +29,7 @@ class CallWidget {
   async fetchToken() {
     const visitorId = getOrCreateVisitorId();
     const res = await fetch(`${TOKEN_SERVER_URL}?visitorId=${visitorId}`);
-    if (!res.ok) throw new Error('Token fetch failed');
+    if (!res.ok) throw new Error("Token fetch failed");
     const { token } = await res.json();
     return token;
   }
@@ -38,12 +39,12 @@ class CallWidget {
     if (this._sdkLoading) return this._sdkLoading;
 
     this._sdkLoading = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = TWILIO_SDK_URL;
       script.onload = resolve;
       script.onerror = () => {
         this._sdkLoading = null;
-        reject(new Error('No se cargó el Twilio SDK'));
+        reject(new Error("No se cargó el Twilio SDK"));
       };
       document.head.appendChild(script);
     });
@@ -56,14 +57,14 @@ class CallWidget {
     const token = await this.fetchToken();
     this._device = new Twilio.Device(token);
 
-    console.log('device init');
-    this._device.on('tokenWillExpire', async () => {
+    console.log("device init");
+    this._device.on("tokenWillExpire", async () => {
       try {
-        console.log('token expired updating...');
+        console.log("token expired updating...");
         const newToken = await this.fetchToken();
         this._device.updateToken(newToken);
       } catch (e) {
-        console.warn('No se puede refrescar el token', e);
+        console.warn("No se puede refrescar el token", e);
       }
     });
   }
@@ -75,48 +76,48 @@ class CallWidget {
       try {
         await this._initDevice();
       } catch (e) {
-        console.warn('Error inicializando device', e);
-        window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }));
+        console.warn("Error inicializando device", e);
+        window.dispatchEvent(new CustomEvent("sdk:call-error", { detail: e }));
         return;
       }
     }
 
-    window.dispatchEvent(new CustomEvent('sdk:call-connecting'));
+    window.dispatchEvent(new CustomEvent("sdk:call-connecting"));
 
     try {
       this._activeCall = await this._device.connect({
         params: {
           clientId: CLIENT_ID,
-          visitorId: getOrCreateVisitorId()
-        }
+          visitorId: getOrCreateVisitorId(),
+        },
       });
 
-      console.log('active call connected, waiting to accept');
+      console.log("active call connected, waiting to accept");
       // the call is ringing on the agent's side
-      this._activeCall.on('ringing', () => {
-        console.log('ringing');
-        window.dispatchEvent(new CustomEvent('sdk:call-ringing'));
+      this._activeCall.on("ringing", () => {
+        console.log("ringing");
+        window.dispatchEvent(new CustomEvent("sdk:call-ringing"));
       });
 
       // the agent accepted (answered) the call
-      this._activeCall.on('accept', () => {
-        console.log('accepted');
-        window.dispatchEvent(new CustomEvent('sdk:call-started'));
+      this._activeCall.on("accept", () => {
+        console.log("accepted");
+        window.dispatchEvent(new CustomEvent("sdk:call-started"));
       });
 
       // the other person or the client disconnected
-      this._activeCall.on('disconnect', () => {
-        window.dispatchEvent(new CustomEvent('sdk:call-ended'));
+      this._activeCall.on("disconnect", () => {
+        window.dispatchEvent(new CustomEvent("sdk:call-ended"));
         this._activeCall = null;
       });
 
       // some error on the call, alert UI
-      this._activeCall.on('error', (e) => {
-        window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }));
+      this._activeCall.on("error", (e) => {
+        window.dispatchEvent(new CustomEvent("sdk:call-error", { detail: e }));
         this._activeCall = null;
       });
     } catch (e) {
-      window.dispatchEvent(new CustomEvent('sdk:call-error', { detail: e }));
+      window.dispatchEvent(new CustomEvent("sdk:call-error", { detail: e }));
     }
   }
 
@@ -126,7 +127,9 @@ class CallWidget {
 }
 
 const _instance = new CallWidget();
-window.addEventListener('sdk:call-requested', () => _instance._handleCallRequested());
-window.addEventListener('sdk:hangup-requested', () => _instance.hangUp());
+window.addEventListener("sdk:call-requested", () =>
+  _instance._handleCallRequested(),
+);
+window.addEventListener("sdk:hangup-requested", () => _instance.hangUp());
 
 window.CallWidget = CallWidget;

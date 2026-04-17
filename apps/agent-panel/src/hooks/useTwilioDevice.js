@@ -5,7 +5,7 @@ export function useTwilioDevice() {
   const BACKEND_URL = "http://localhost:4001/token";
 
   const [status, setStatus] = useState("idle");
-  const [callParams, setCallParams] = useState(null)
+  const [callParams, setCallParams] = useState(null);
   const callRef = useRef(null);
   const deviceRef = useRef(null);
 
@@ -33,14 +33,20 @@ export function useTwilioDevice() {
 
       deviceRef.current.on("incoming", (call) => {
         callRef.current = call;
-        const from = call.parameters.From?.replace('client:', '') ?? ''
-        const [dealer, visitorId] = from.split('__')
-        setCallParams({ dealer: dealer || null, visitorId: visitorId || null })
+        const from = call.parameters.From?.replace("client:", "") ?? "";
+        const [dealer, visitorId] = from.split("__");
+        setCallParams({ dealer: dealer || null, visitorId: visitorId || null });
 
         setStatus("ringing");
 
-        call.on("cancel", () => { setStatus("idle"); setCallParams(null) });
-        call.on("disconnect", () => { setStatus("idle"); setCallParams(null) });
+        call.on("cancel", () => {
+          setStatus("idle");
+          setCallParams(null);
+        });
+        call.on("disconnect", () => {
+          setStatus("idle");
+          setCallParams(null);
+        });
       });
       await deviceRef.current.register();
     }

@@ -4,5 +4,5 @@ export default function IdleScreen() {
       <h2>Panel de agente</h2>
       <p>Esperando llamada...</p>
     </>
-  )
+  );
 }
