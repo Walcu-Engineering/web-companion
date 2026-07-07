@@ -16,7 +16,7 @@ const init = async () => {
   app.set('trust proxy', true);
 
   app.use('/', require('./server/routes/index.js')({ mfetch, MAPI_URL, debug }));
-  app.use('/embed-static', express.static(path.join(__dirname, 'client/iframe')));
+  app.use('/', express.static(path.join(__dirname, 'client')));
 
   const PORT = process.env.PORT;
   if (!PORT) throw new Error('PORT environment variable is not defined');
