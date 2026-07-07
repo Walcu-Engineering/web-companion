@@ -1,0 +1,18 @@
+{
+  "name": "web-companion",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "^22.0.0",
+    "pnpm": "^11.0.0"
+  },
+  "dependencies": {
+    "@walcu-engineering/mapp-utils": "3.10.10",
+    "body-parser": "^1.15.2",
+    "debug": "^4.3.4",
+    "express": "^4.14.0"
+  }
+}
