@@ -9,13 +9,13 @@ process.on('unhandledRejection', (reason, p) => {
 });
 
 const init = async () => {
-  const { mfetch, MAPI_URL, debug } = await getSystemData();
+  const { mfetch, MAPI_URL, MAPPEX_URL, debug } = await getSystemData();
 
   const app = express();
   app.use(bodyParser.json());
   app.set('trust proxy', true);
 
-  app.use('/', require('./server/routes/index.js')({ mfetch, MAPI_URL, debug }));
+  app.use('/', require('./server/routes/index.js')({ mfetch, MAPI_URL, MAPPEX_URL, debug }));
   app.use('/', express.static(path.join(__dirname, 'client')));
 
   const PORT = process.env.PORT;
