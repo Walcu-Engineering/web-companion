@@ -42,3 +42,27 @@ html, body {
   height: 26px;
   fill: #fff;
 }
+
+.companion-call-btn[data-state="connecting"] {
+  background-color: #6b7280;
+  cursor: wait;
+  animation: companion-pulse 1s ease-in-out infinite;
+}
+
+.companion-call-btn[data-state="in_call"] {
+  background-color: #dc2626;
+}
+
+.companion-call-btn[data-state="in_call"]:hover {
+  background-color: #b91c1c;
+}
+
+.companion-call-btn[data-state="error"] {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+@keyframes companion-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
