@@ -8,11 +8,7 @@
       return window.crypto.randomUUID();
     }
     var bytes = new Uint8Array(16);
-    if (window.crypto && window.crypto.getRandomValues) {
-      window.crypto.getRandomValues(bytes);
-    } else {
-      for (var i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
-    }
+    window.crypto.getRandomValues(bytes);
     bytes[6] = (bytes[6] & 0x0f) | 0x40;
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
     var hex = [];
