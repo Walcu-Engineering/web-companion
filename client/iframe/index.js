@@ -1,8 +1,19 @@
 'use strict';
 
 (function () {
-  const public_id = new URLSearchParams(window.location.search).get('public_id');
+  const query = new URLSearchParams(window.location.search);
+  const public_id = query.get('public_id');
   if (!public_id) return;
+
+  const visitor_id = query.get('visitor_id');
+  const session_id = query.get('session_id');
+  const page_url = query.get('page_url');
+  const page_title = query.get('page_title');
+  const origin = {
+    source: query.get('origin_source') || '',
+    medium: query.get('origin_medium') || '',
+    campaign: query.get('origin_campaign') || '',
+  };
 
   const STATES = {
     IDLE: 'idle',
@@ -37,6 +48,21 @@
     return data.token;
   }
 
+  async function createCallIntent() {
+    try {
+      const res = await fetch('/public/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_id, visitor_id, session_id, page_url, page_title, origin }),
+      });
+      const data = await res.json();
+      return data.ok ? data.call_intent_id : null;
+    } catch (err) {
+      console.error('[companion] call intent creation failed', err);
+      return null;
+    }
+  }
+
   async function ensureDevice() {
     if (device) return device;
     const token = await fetchVoiceToken();
@@ -66,7 +92,8 @@
     setState(STATES.CONNECTING);
     try {
       await ensureDevice();
-      const call = await device.connect({ params: { public_id: public_id, path: getReferrerPath() } });
+      const call_intent_id = await createCallIntent();
+      const call = await device.connect({ params: { public_id: public_id, path: getReferrerPath(), call_intent_id: call_intent_id || '' } });
       currentCall = call;
       call.on('accept', () => setState(STATES.IN_CALL));
       call.on('disconnect', () => {

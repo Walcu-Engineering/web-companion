@@ -2,6 +2,7 @@
 const express              = require('express');
 const { getSdkConfig }     = require('../services/sdkConfigs');
 const { validateDomain }   = require('../services/domains');
+const { createEventIntent } = require('../services/calls');
 const { sendGenericError } = require('../lib/errors');
 
 module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
@@ -47,6 +48,30 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
       return res.json({ ok: true, token });
     } catch (err) {
       debug('Error fetching companion token: %o', err);
+      return sendGenericError(res, 500);
+    }
+  });
+
+  router.post('/events', async (req, res) => {
+    const { public_id } = req.body;
+    if (!public_id) return sendGenericError(res, 400);
+
+    let config;
+    try {
+      config = await getSdkConfig(mfetch, MAPI_URL, public_id);
+    } catch (err) {
+      debug('Error fetching sdkconfig: %o', err);
+      return sendGenericError(res, 500);
+    }
+
+    if (!config) return sendGenericError(res, 404);
+    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) return sendGenericError(res, 403);
+
+    try {
+      const { call_intent_id } = await createEventIntent(mfetch, MAPPEX_URL, config.dealer_id, req.body);
+      return res.json({ ok: true, call_intent_id });
+    } catch (err) {
+      debug('Error creating call intent: %o', err);
       return sendGenericError(res, 500);
     }
   });
