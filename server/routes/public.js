@@ -20,7 +20,9 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
     }
 
     if (!config) return sendGenericError(res, 404);
-    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) return sendGenericError(res, 403);
+    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) {
+      console.log('NAD', config); return sendGenericError(res, 403);
+    }
 
     return res.json({ ok: true, button: { label: 'Llamar' } });
   });
