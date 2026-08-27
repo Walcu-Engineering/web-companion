@@ -76,7 +76,16 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
     }
   });
 
+  router.options('/events/batch', (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(204);
+  });
+
   router.post('/events/batch', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+
     const { public_id, events } = req.body;
     if (!public_id || !Array.isArray(events) || !events.length || events.length > 50) return sendGenericError(res, 400);
 
