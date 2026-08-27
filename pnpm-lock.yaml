@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@walcu-engineering/mapp-utils':
-        specifier: 3.10.10
-        version: 3.10.10(typescript@5.9.3)
+        specifier: 3.10.24
+        version: 3.10.24(typescript@5.9.3)
       body-parser:
         specifier: ^1.15.2
         version: 1.20.5
@@ -146,8 +146,8 @@ packages:
   '@walcu-engineering/bson-objectid@4.0.0':
     resolution: {integrity: sha512-Nt+RM/a6pN794LjY90RxPW6GpGhTtkvDer7YrrGG0YCFrutUtkVMYmzk9seQsHracSJwo7DBYU/zrqJOfzMaDg==, tarball: https://npm.pkg.github.com/download/@walcu-engineering/bson-objectid/4.0.0/9c8f6f1ed83a9a1b4dda0ae4b389e8d8e88492dc}
 
-  '@walcu-engineering/mapp-utils@3.10.10':
-    resolution: {integrity: sha512-2gFyfW5b/Itwrn6nVjbHFZvRhwv4ZJxflbbrxt0H0GUkCuEAYTSi04Kn9TDTubBoxYgRLdBCXIZajlPtI+IKvQ==, tarball: https://npm.pkg.github.com/download/@Walcu-Engineering/mapp-utils/3.10.10/dca9eefc3d83b72d5f6444cde00aabe00a0ec68d}
+  '@walcu-engineering/mapp-utils@3.10.24':
+    resolution: {integrity: sha512-Gmv40UMGHuKv/YrfC5co+tt/pxcP+6BnBcXH9elxKk7ANkbYNS340PuKBBEtG2rxerd4dFixhQ1AxV4eIvBPXQ==, tarball: https://npm.pkg.github.com/download/@Walcu-Engineering/mapp-utils/3.10.24/4c321376cf4950ebe9e8aaad364b3b6e46d6ecfd}
     hasBin: true
 
   accepts@1.3.8:
@@ -1017,7 +1017,7 @@ snapshots:
 
   '@walcu-engineering/bson-objectid@4.0.0': {}
 
-  '@walcu-engineering/mapp-utils@3.10.10(typescript@5.9.3)':
+  '@walcu-engineering/mapp-utils@3.10.24(typescript@5.9.3)':
     dependencies:
       '@formatjs/cli-lib': 6.6.6
       '@formatjs/intl': 3.1.8(typescript@5.9.3)

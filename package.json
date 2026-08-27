@@ -10,7 +10,7 @@
     "pnpm": "^11.0.0"
   },
   "dependencies": {
-    "@walcu-engineering/mapp-utils": "3.10.10",
+    "@walcu-engineering/mapp-utils": "3.10.24",
     "body-parser": "^1.15.2",
     "debug": "^4.3.4",
     "express": "^4.14.0"

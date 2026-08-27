@@ -1,2 +1,7 @@
+minimumReleaseAge: 14400
+
+minimumReleaseAgeExclude:
+  - '@walcu-engineering/*'
+
 allowBuilds:
-  mongodb-memory-server: true
+  mongodb-memory-server: false
