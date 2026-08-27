@@ -15,6 +15,10 @@ const init = async () => {
   app.use(bodyParser.json());
   app.set('trust proxy', true);
 
+  app.get('/health', (_, res) => {
+    res.status(200).send('OK');
+  });
+
   app.use('/', require('./server/routes/index.js')({ mfetch, MAPI_URL, MAPPEX_URL, debug }));
   app.use('/', express.static(path.join(__dirname, 'client')));
 
