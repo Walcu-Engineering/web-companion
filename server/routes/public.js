@@ -76,15 +76,21 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
     }
   });
 
-  router.options('/events/batch', (req, res) => {
-    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  const applyCors = (req, res) => {
+    if (!req.headers.origin) return;
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'POST');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+  };
+
+  router.options('/events/batch', (req, res) => {
+    applyCors(req, res);
     res.sendStatus(204);
   });
 
   router.post('/events/batch', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    applyCors(req, res);
 
     const { public_id, events } = req.body;
     if (!public_id || !Array.isArray(events) || !events.length || events.length > 50) return sendGenericError(res, 400);
