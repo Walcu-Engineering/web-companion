@@ -2,77 +2,73 @@
 const express              = require('express');
 const { getSdkConfig }     = require('../services/sdkConfigs');
 const { validateDomain }   = require('../services/domains');
-const { createEventIntent, createEventBatch } = require('../services/calls');
+const { createEventIntent, createEventBatch, validatePickerToken } = require('../services/calls');
 const { sendGenericError } = require('../lib/errors');
 
 module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
   const router = express.Router();
-
-  router.get('/config', async (req, res) => {
-    const { public_id } = req.query;
-    if (!public_id) return sendGenericError(res, 400);
+  const resolveConfig = async (req, public_id) => {
+    if (!public_id) throw Object.assign(new Error('missing public_id'), { status: 400 });
 
     let config;
     try {
       config = await getSdkConfig(mfetch, MAPI_URL, public_id);
     } catch (err) {
       debug('Error fetching sdkconfig: %o', err);
-      return sendGenericError(res, 500);
+      throw Object.assign(new Error('sdkconfig fetch failed'), { status: 500 });
     }
 
-    if (!config) return sendGenericError(res, 404);
-    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) return sendGenericError(res, 403);
+    if (!config) throw Object.assign(new Error('sdkconfig not found'), { status: 404 });
+    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) {
+      throw Object.assign(new Error('sdkconfig inactive or domain not allowed'), { status: 403 });
+    }
+    return config;
+  };
 
-    return res.json({ ok: true, button: { label: 'Llamar' } });
+  router.get('/config', async (req, res) => {
+    try {
+      await resolveConfig(req, req.query.public_id);
+      return res.json({ ok: true, button: { label: 'Llamar' } });
+    } catch (err) {
+      return sendGenericError(res, err.status || 500);
+    }
   });
 
   router.get('/voice-token', async (req, res) => {
     const { public_id } = req.query;
-    if (!public_id) return sendGenericError(res, 400);
-
-    let config;
     try {
-      config = await getSdkConfig(mfetch, MAPI_URL, public_id);
-    } catch (err) {
-      debug('Error fetching sdkconfig: %o', err);
-      return sendGenericError(res, 500);
-    }
-
-    if (!config) return sendGenericError(res, 404);
-    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) return sendGenericError(res, 403);
-
-    try {
+      const config = await resolveConfig(req, public_id);
       const tokenRes = await mfetch(`${MAPPEX_URL}services/twilio/dealers/${config.dealer_id}/voice/companion_token?public_id=${encodeURIComponent(public_id)}`);
       if (!tokenRes.ok) return sendGenericError(res, 500);
       const token = await tokenRes.text();
       return res.json({ ok: true, token });
     } catch (err) {
-      debug('Error fetching companion token: %o', err);
-      return sendGenericError(res, 500);
+      if (!err.status) debug('Error fetching companion token: %o', err);
+      return sendGenericError(res, err.status || 500);
     }
   });
 
   router.post('/events', async (req, res) => {
-    const { public_id } = req.body;
-    if (!public_id) return sendGenericError(res, 400);
-
-    let config;
     try {
-      config = await getSdkConfig(mfetch, MAPI_URL, public_id);
-    } catch (err) {
-      debug('Error fetching sdkconfig: %o', err);
-      return sendGenericError(res, 500);
-    }
-
-    if (!config) return sendGenericError(res, 404);
-    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) return sendGenericError(res, 403);
-
-    try {
+      const config = await resolveConfig(req, req.body.public_id);
       const { call_intent_id } = await createEventIntent(mfetch, MAPPEX_URL, config.dealer_id, req.body);
       return res.json({ ok: true, call_intent_id });
     } catch (err) {
-      debug('Error creating call intent: %o', err);
-      return sendGenericError(res, 500);
+      if (!err.status) debug('Error creating call intent: %o', err);
+      return sendGenericError(res, err.status || 500);
+    }
+  });
+
+  router.post('/picker/validate', async (req, res) => {
+    const { public_id, token } = req.body;
+    if (!token) return sendGenericError(res, 400);
+    try {
+      const config = await resolveConfig(req, public_id);
+      const result = await validatePickerToken(mfetch, MAPPEX_URL, config.dealer_id, token);
+      return res.json(result);
+    } catch (err) {
+      if (!err.status) debug('Error validating picker token: %o', err);
+      return sendGenericError(res, err.status || 500);
     }
   });
 
@@ -91,27 +87,16 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
 
   router.post('/events/batch', async (req, res) => {
     applyCors(req, res);
-
     const { public_id, events } = req.body;
-    if (!public_id || !Array.isArray(events) || !events.length || events.length > 50) return sendGenericError(res, 400);
-
-    let config;
-    try {
-      config = await getSdkConfig(mfetch, MAPI_URL, public_id);
-    } catch (err) {
-      debug('Error fetching sdkconfig: %o', err);
-      return sendGenericError(res, 500);
-    }
-
-    if (!config) return sendGenericError(res, 404);
-    if (config.status !== 'active' || !validateDomain(req, config.allowed_domains)) return sendGenericError(res, 403);
+    if (!Array.isArray(events) || !events.length || events.length > 50) return sendGenericError(res, 400);
 
     try {
+      const config = await resolveConfig(req, public_id);
       await createEventBatch(mfetch, MAPPEX_URL, config.dealer_id, req.body);
       return res.json({ ok: true });
     } catch (err) {
-      debug('Error creating event batch: %o', err);
-      return sendGenericError(res, 500);
+      if (!err.status) debug('Error creating event batch: %o', err);
+      return sendGenericError(res, err.status || 500);
     }
   });
 

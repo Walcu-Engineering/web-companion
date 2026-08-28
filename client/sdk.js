@@ -129,6 +129,10 @@
     var dataAttr = findDataAttr(el);
     if (dataAttr) return '[' + dataAttr.name + '="' + CSS.escape(dataAttr.value) + '"]';
 
+    var role = el.getAttribute('role');
+    var ariaLabel = el.getAttribute('aria-label');
+    if (role && ariaLabel) return '[role="' + role + '"][aria-label="' + CSS.escape(ariaLabel) + '"]';
+
     var cls = (typeof el.className === 'string')
       ? el.className.trim().split(/\s+/).filter(function (c) { return c && !looksGenerated(c); })
       : [];
@@ -193,7 +197,10 @@
     if (!sentViaBeacon) sendViaFetch(payload);
   }
 
+  var pickerModeActive = false;
+
   document.addEventListener('click', function (e) {
+    if (pickerModeActive) return; // clicks made while defining an event are not real visitor traffic
     var el = e.target && e.target.closest && e.target.closest('button, a, [role="button"], input[type="submit"]');
     if (!el) return;
     pushEvent('auto_click', { target: describeElement(el) });
@@ -221,4 +228,50 @@
     if (document.visibilityState === 'hidden') flushEvents(true);
   });
   window.addEventListener('pagehide', function () { flushEvents(true); });
+
+  // --- picker mode: admin defines a manual event by clicking the real element -------
+
+  function activatePickerMode(targetOrigin, exp) {
+    pickerModeActive = true;
+
+    var style = document.createElement('style');
+    style.textContent = '.__walcu_picker_hover{outline:2px solid #6d5ef5!important;cursor:crosshair!important;}';
+    document.head.appendChild(style);
+
+    var hovered = null;
+    function onMouseOver(e) {
+      var el = e.target && e.target.closest && e.target.closest('button, a, [role="button"], input[type="submit"]');
+      if (hovered) hovered.classList.remove('__walcu_picker_hover');
+      hovered = el || null;
+      if (hovered) hovered.classList.add('__walcu_picker_hover');
+    }
+    function onClick(e) {
+      var el = e.target && e.target.closest && e.target.closest('button, a, [role="button"], input[type="submit"]');
+      if (!el) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.parent.postMessage({ type: 'walcu:element_picked', element: describeElement(el) }, targetOrigin);
+    }
+    document.addEventListener('mouseover', onMouseOver, true);
+    document.addEventListener('click', onClick, true);
+
+    function deactivate() {
+      pickerModeActive = false;
+      document.removeEventListener('mouseover', onMouseOver, true);
+      document.removeEventListener('click', onClick, true);
+      if (hovered) hovered.classList.remove('__walcu_picker_hover');
+    }
+    if (exp) setTimeout(deactivate, Math.max((exp * 1000) - Date.now(), 0));
+  }
+
+  var pickerToken = new URLSearchParams(window.location.search).get('walcu_picker_token');
+  if (pickerToken && window.top !== window.self) {
+    fetch(base + '/public/picker/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ public_id: public_id, token: pickerToken })
+    }).then(function (r) { return r.json(); }).then(function (result) {
+      if (result.ok) activatePickerMode(result.webclient_origin, result.exp);
+    }).catch(function () {});
+  }
 }());
