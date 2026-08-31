@@ -59,7 +59,21 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
     }
   });
 
+  const applyCors = (req, res) => {
+    if (!req.headers.origin) return;
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+  };
+
+  router.options('/picker/validate', (req, res) => {
+    applyCors(req, res);
+    res.sendStatus(204);
+  });
+
   router.post('/picker/validate', async (req, res) => {
+    applyCors(req, res);
     const { public_id, token } = req.body;
     if (!token) return sendGenericError(res, 400);
     try {
@@ -71,14 +85,6 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
       return sendGenericError(res, err.status || 500);
     }
   });
-
-  const applyCors = (req, res) => {
-    if (!req.headers.origin) return;
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'POST');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-  };
 
   router.options('/events/batch', (req, res) => {
     applyCors(req, res);
