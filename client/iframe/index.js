@@ -2,7 +2,8 @@
 
 (function () {
   const public_id = new URLSearchParams(window.location.search).get('public_id');
-  if (!public_id) return;
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (!public_id || !token) return;
 
   const STATES = {
     IDLE: 'idle',
@@ -31,7 +32,7 @@
   }
 
   async function fetchVoiceToken() {
-    const res = await fetch(`/public/voice-token?public_id=${encodeURIComponent(public_id)}`);
+    const res = await fetch(`/public/voice-token?public_id=${encodeURIComponent(public_id)}&token=${encodeURIComponent(token)}`);
     const data = await res.json();
     if (!data.ok) throw new Error('voice-token error');
     return data.token;
@@ -90,7 +91,7 @@
   }
 
   async function init() {
-    const res = await fetch(`/public/config?public_id=${encodeURIComponent(public_id)}`);
+    const res = await fetch(`/public/config?public_id=${encodeURIComponent(public_id)}&token=${encodeURIComponent(token)}`);
     const data = await res.json();
     if (!data.ok) return;
     const root = document.getElementById('companion-root');

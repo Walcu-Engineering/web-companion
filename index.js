@@ -9,7 +9,7 @@ process.on('unhandledRejection', (reason, p) => {
 });
 
 const init = async () => {
-  const { mfetch, MAPI_URL, MAPPEX_URL, debug } = await getSystemData();
+  const { mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key } = await getSystemData();
 
   const app = express();
   app.use(bodyParser.json());
@@ -19,7 +19,7 @@ const init = async () => {
     res.status(200).send('OK');
   });
 
-  app.use('/', require('./server/routes/index.js')({ mfetch, MAPI_URL, MAPPEX_URL, debug }));
+  app.use('/', require('./server/routes/index.js')({ mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key }));
   app.use('/', express.static(path.join(__dirname, 'client')));
 
   const PORT = process.env.PORT;

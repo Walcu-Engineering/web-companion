@@ -16,5 +16,5 @@ module.exports = async () => {
     MAPI_URL,
     MAPPEX_URL,
   ].filter(f => f));
-  return { mfetch, MAPI_URL, MAPPEX_URL, debug };
+  return { mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key };
 };

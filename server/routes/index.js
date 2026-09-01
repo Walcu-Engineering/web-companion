@@ -1,12 +1,12 @@
 'use strict';
 const express = require('express');
 
-module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
+module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key }) => {
   const router = express.Router();
 
   router.get('/health', (_, res) => res.json({ ok: true }));
-  router.use('/embed', require('./embed.js')({ debug }));
-  router.use('/public', require('./public.js')({ mfetch, MAPI_URL, MAPPEX_URL, debug }));
+  router.use('/embed', require('./embed.js')({ mfetch, MAPI_URL, private_key, debug }));
+  router.use('/public', require('./public.js')({ mfetch, MAPI_URL, MAPPEX_URL, debug, public_key }));
 
   return router;
 };
