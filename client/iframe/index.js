@@ -38,12 +38,24 @@
     return `<button class="companion-call-btn" data-state="${currentState}" title="${label}" ${disabled}>${icon}</button>`;
   }
 
+  function reportSize() {
+    let width = 0, height = 0;
+    for (const el of root.children) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > width) width = rect.width;
+      if (rect.height > height) height = rect.height;
+    }
+    if (!width || !height) return;
+    window.parent.postMessage({ type: 'companion-resize', width, height }, '*');
+  }
+
   function render() {
     const group = state === STATES.CONNECTING ? 'connecting'
       : state === STATES.IN_CALL ? 'in_call'
       : state === STATES.ERROR ? null
       : 'idle';
     root.innerHTML = (group && customHtml[group]) || defaultMarkup(state);
+    reportSize();
   }
 
   function setState(next) {

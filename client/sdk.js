@@ -17,8 +17,13 @@
       function mount(retry) {
         var target = document.querySelector(mount_selector);
         if (target) {
-          iframe.style.cssText = 'border:none;width:100%;height:100%;display:block;background:transparent;';
+          iframe.style.cssText = 'border:none;width:68px;height:68px;display:block;background:transparent;';
           target.appendChild(iframe);
+          window.addEventListener('message', function (ev) {
+            if (ev.source !== iframe.contentWindow || !ev.data || ev.data.type !== 'companion-resize') return;
+            iframe.style.width = ev.data.width + 'px';
+            iframe.style.height = ev.data.height + 'px';
+          });
         } else if (mount_selector && !retry && document.readyState !== 'complete') {
           document.addEventListener('DOMContentLoaded', function () { mount(true); }, { once: true });
         } else {
