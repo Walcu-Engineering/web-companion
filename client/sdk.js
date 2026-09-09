@@ -10,10 +10,24 @@
       if (!data.ok) return;
       var iframe = document.createElement('iframe');
       iframe.src = base + '/embed?public_id=' + encodeURIComponent(public_id) + '&token=' + encodeURIComponent(data.token);
-      iframe.style.cssText = 'border:none;width:68px;height:68px;position:fixed;bottom:24px;right:24px;z-index:9999;background:transparent;';
       iframe.setAttribute('allowtransparency', 'true');
       iframe.setAttribute('allow', 'microphone; autoplay');
-      document.body.appendChild(iframe);
+      var mount_selector = (data.placement || {}).mount_selector;
+
+      function mount(retry) {
+        var target = document.querySelector(mount_selector);
+        if (target) {
+          iframe.style.cssText = 'border:none;width:100%;height:100%;display:block;background:transparent;';
+          target.appendChild(iframe);
+        } else if (mount_selector && !retry && document.readyState !== 'complete') {
+          document.addEventListener('DOMContentLoaded', function () { mount(true); }, { once: true });
+        } else {
+          iframe.style.cssText = 'border:none;width:68px;height:68px;position:fixed;bottom:24px;right:24px;z-index:9999;background:transparent;';
+          document.body.appendChild(iframe);
+        }
+      }
+
+      mount(false);
     })
     .catch(function () { });
 }());

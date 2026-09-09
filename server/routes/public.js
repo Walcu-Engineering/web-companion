@@ -2,6 +2,7 @@
 const express                = require('express');
 const { fetchConfigOrThrow, resolveDealerConfig } = require('../services/sdkConfigs');
 const { mintEmbedToken, verifyEmbedToken } = require('../services/embedToken');
+const { shapePlacement, shapeButton } = require('../services/appearance');
 const { sendGenericError }   = require('../lib/errors');
 
 module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key }) => {
@@ -14,13 +15,14 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key
     const origin = req.headers.origin;
     if (origin) res.set('Access-Control-Allow-Origin', origin);
 
+    let config;
     try {
-      await resolveDealerConfig(mfetch, MAPI_URL, debug, req, public_id);
+      config = await resolveDealerConfig(mfetch, MAPI_URL, debug, req, public_id);
     } catch (err) {
       return sendGenericError(res, err.status || 500);
     }
 
-    return res.json({ ok: true, token: mintEmbedToken(private_key, public_id) });
+    return res.json({ ok: true, token: mintEmbedToken(private_key, public_id), placement: shapePlacement(config) });
   });
 
   // Domain was already verified in /session; same-origin calls from inside the iframe
@@ -38,12 +40,13 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug, public_key, private_key
     const { public_id, token } = req.query;
     if (!public_id || !token) return sendGenericError(res, 400);
 
+    let config;
     try {
-      await resolveActiveConfig(public_id, token);
+      config = await resolveActiveConfig(public_id, token);
     } catch (err) {
       return sendGenericError(res, err.status || 500);
     }
-    return res.json({ ok: true, button: { label: 'Llamar' } });
+    return res.json({ ok: true, button: shapeButton(config) });
   });
 
   router.get('/voice-token', async (req, res) => {

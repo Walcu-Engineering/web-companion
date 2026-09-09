@@ -20,15 +20,36 @@
 
   let device = null;
   let currentCall = null;
-  let button = null;
+  let root = null;
+  let label = 'Llamar';
+  let customHtml = { idle: null, connecting: null, in_call: null };
   let state = STATES.IDLE;
+
+  function sanitize(html) {
+    if (!html) return null;
+    return DOMPurify.sanitize(html, {
+      FORBID_TAGS: ['script', 'iframe', 'object', 'embed', 'form', 'link', 'meta', 'base'],
+    });
+  }
+
+  function defaultMarkup(currentState) {
+    const icon = currentState === STATES.IN_CALL ? ICONS.hangup : ICONS.call;
+    const disabled = currentState === STATES.CONNECTING ? 'disabled' : '';
+    return `<button class="companion-call-btn" data-state="${currentState}" title="${label}" ${disabled}>${icon}</button>`;
+  }
+
+  function render() {
+    const group = state === STATES.CONNECTING ? 'connecting'
+      : state === STATES.IN_CALL ? 'in_call'
+      : state === STATES.ERROR ? null
+      : 'idle';
+    root.innerHTML = (group && customHtml[group]) || defaultMarkup(state);
+  }
 
   function setState(next) {
     state = next;
-    if (!button) return;
-    button.dataset.state = state;
-    button.disabled = state === STATES.CONNECTING;
-    button.innerHTML = state === STATES.IN_CALL ? ICONS.hangup : ICONS.call;
+    if (!root) return;
+    render();
   }
 
   async function fetchVoiceToken() {
@@ -94,13 +115,14 @@
     const res = await fetch(`/public/config?public_id=${encodeURIComponent(public_id)}&token=${encodeURIComponent(token)}`);
     const data = await res.json();
     if (!data.ok) return;
-    const root = document.getElementById('companion-root');
-    button = document.createElement('button');
-    button.className = 'companion-call-btn';
-    button.title = data.button.label;
-    button.innerHTML = ICONS.call;
-    button.addEventListener('click', onButtonClick);
-    root.appendChild(button);
+    root = document.getElementById('companion-root');
+    label = data.button.label;
+    customHtml = {
+      idle: sanitize(data.button.html.idle),
+      connecting: sanitize(data.button.html.connecting),
+      in_call: sanitize(data.button.html.in_call),
+    };
+    root.addEventListener('click', onButtonClick);
     setState(STATES.READY);
   }
 
