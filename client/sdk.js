@@ -4,6 +4,8 @@
 
   var VISITOR_ID_KEY = '_walcu_visitor_id';
   var SESSION_ID_KEY = '_walcu_session_id';
+  var SESSION_LAST_ACTIVITY_KEY = '_walcu_session_last_activity';
+  var SESSION_TIMEOUT_MS = 30 * 60 * 1000;
   var ORIGIN_KEY     = '_walcu_origin';
 
   function uuidv4() {
@@ -166,8 +168,24 @@
     };
   }
 
+  function rotateSessionIfExpired() {
+    var now = Date.now();
+    try {
+      var lastActivity = parseInt(window.sessionStorage.getItem(SESSION_LAST_ACTIVITY_KEY), 10);
+      if (lastActivity && (now - lastActivity) > SESSION_TIMEOUT_MS) {
+        flushEvents(false);
+        session_id = uuidv4();
+        window.sessionStorage.setItem(SESSION_ID_KEY, session_id);
+      }
+      window.sessionStorage.setItem(SESSION_LAST_ACTIVITY_KEY, String(now));
+    } catch (e) {
+      // Storage can throw (private mode, cookies disabled...); keep current session_id
+    }
+  }
+
   var eventBuffer = [];
   function pushEvent(event_type, extra) {
+    rotateSessionIfExpired();
     eventBuffer.push(Object.assign({
       event_type: event_type,
       page_url: window.location.href,
