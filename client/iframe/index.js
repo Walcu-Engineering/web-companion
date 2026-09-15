@@ -63,10 +63,54 @@
     } catch { return '/'; }
   }
 
-  async function startCall() {
+  function dedupeByDeviceId(devices) {
+    const seen = {};
+    return devices.filter((d) => {
+      if (seen[d.deviceId]) return false;
+      seen[d.deviceId] = true;
+      return true;
+    });
+  }
+
+  function serializeDevices(devices) {
+    return devices.map((d) => ({ deviceId: d.deviceId, label: d.label }));
+  }
+
+  async function startPreCallFlow() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((t) => t.stop());
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const mics = dedupeByDeviceId(devices.filter((d) => d.kind === 'audioinput'));
+      const speakers = dedupeByDeviceId(devices.filter((d) => d.kind === 'audiooutput'));
+      window.parent.postMessage({
+        type: 'companion-open-modal',
+        mics: serializeDevices(mics),
+        speakers: serializeDevices(speakers),
+      }, '*');
+    } catch (err) {
+      console.error('[companion] getUserMedia failed', err);
+      window.parent.postMessage({ type: 'companion-open-modal', denied: true }, '*');
+    }
+  }
+
+  async function applyAudioPrefs(prefs) {
+    if (!prefs) return;
+    try {
+      if (prefs.micDeviceId) await device.audio.setInputDevice(prefs.micDeviceId);
+      if (prefs.speakerDeviceId && device.audio.isOutputSelectionSupported) {
+        await device.audio.speakerDevices.set([prefs.speakerDeviceId]);
+      }
+    } catch (err) {
+      console.error('[companion] applying audio prefs failed', err);
+    }
+  }
+
+  async function startCall(prefs) {
     setState(STATES.CONNECTING);
     try {
       await ensureDevice();
+      await applyAudioPrefs(prefs);
       const call = await device.connect({ params: { public_id: public_id, path: getReferrerPath() } });
       currentCall = call;
       call.on('accept', () => setState(STATES.IN_CALL));
@@ -86,9 +130,15 @@
   }
 
   function onButtonClick() {
-    if (state === STATES.READY || state === STATES.ERROR) startCall();
-    else if (state === STATES.IN_CALL && currentCall) currentCall.disconnect();
+    if (state === STATES.READY || state === STATES.ERROR) {
+      startPreCallFlow();
+    } else if (state === STATES.IN_CALL && currentCall) currentCall.disconnect();
   }
+
+  window.addEventListener('message', (ev) => {
+    if (ev.source !== window.parent || !ev.data || ev.data.type !== 'companion-call-start') return;
+    startCall(ev.data.prefs);
+  });
 
   async function init() {
     const res = await fetch(`/public/config?public_id=${encodeURIComponent(public_id)}&token=${encodeURIComponent(token)}`);
