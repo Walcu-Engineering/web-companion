@@ -2,7 +2,8 @@
 const express              = require('express');
 const { getSdkConfig }     = require('../services/sdkConfigs');
 const { validateDomain }   = require('../services/domains');
-const { createEventIntent, createEventBatch, validatePickerToken } = require('../services/calls');
+const { validatePickerToken } = require('../services/calls');
+const { createEvents } = require('../services/sdkEvents');
 const { sendGenericError } = require('../lib/errors');
 
 module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
@@ -50,9 +51,13 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
 
   router.post('/events', async (req, res) => {
     try {
-      const config = await resolveConfig(req, req.body.public_id);
-      const { call_intent_id } = await createEventIntent(mfetch, MAPPEX_URL, config.dealer_id, req.body);
-      return res.json({ ok: true, call_intent_id });
+      const { public_id, visitor_id, session_id, page_url, page_title, origin } = req.body;
+      const config = await resolveConfig(req, public_id);
+      const [sdk_event] = await createEvents(mfetch, MAPI_URL, config.dealer_id, {
+        public_id, visitor_id, session_id,
+        events: [{ event_type: 'call_intent_created', page_url, page_title, origin }],
+      });
+      return res.json({ ok: true, call_intent_id: sdk_event._id });
     } catch (err) {
       if (!err.status) debug('Error creating call intent: %o', err);
       return sendGenericError(res, err.status || 500);
@@ -98,7 +103,7 @@ module.exports = ({ mfetch, MAPI_URL, MAPPEX_URL, debug }) => {
 
     try {
       const config = await resolveConfig(req, public_id);
-      await createEventBatch(mfetch, MAPPEX_URL, config.dealer_id, req.body);
+      await createEvents(mfetch, MAPI_URL, config.dealer_id, req.body);
       return res.json({ ok: true });
     } catch (err) {
       if (!err.status) debug('Error creating event batch: %o', err);
