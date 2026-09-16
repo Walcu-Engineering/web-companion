@@ -12,6 +12,6 @@ module.exports = async () => {
   if (!public_key) throw new Error('MAPP_WEB_COMPANION_PUBLIC_KEY environment variable is not defined');
   if (!private_key) throw new Error('MAPP_WEB_COMPANION_PRIVATE_KEY environment variable is not defined');
 
-  const mfetch = require('@walcu-engineering/mapp-utils/mapp_auth_server_fetch_wrapper')('web_companion', public_key, private_key);
+  const mfetch = require('@walcu-engineering/mapp-utils/mapp_auth_server_fetch_wrapper')('web_companion', public_key, private_key, [MAPI_URL, MAPPEX_URL]);
   return { mfetch, MAPI_URL, MAPPEX_URL, debug };
 };
