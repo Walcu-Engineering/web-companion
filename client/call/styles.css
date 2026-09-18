@@ -53,3 +53,66 @@ p {
   margin: 8px 0 0;
   color: #475569;
 }
+
+.call-devices,
+.call-denied {
+  margin-top: 24px;
+  text-align: left;
+}
+
+.call-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.call-field select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font: inherit;
+  font-weight: 400;
+}
+
+.call-meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e2e8f0;
+}
+
+.call-meter-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: #16a34a;
+  transition: width 50ms linear;
+}
+
+.call-cta {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.call-cta:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.call-cta:disabled {
+  cursor: not-allowed;
+  background: #94a3b8;
+}

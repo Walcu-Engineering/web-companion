@@ -7,11 +7,32 @@
   <link rel="stylesheet" href="/call/styles.css">
 </head>
 <body>
-  <main class="call-shell" aria-live="polite">
-    <section class="call-card">
+  <main class="call-shell">
+    <section class="call-card" aria-labelledby="call-title">
       <div class="call-logo" aria-hidden="true">W</div>
-      <h1>Walcu</h1>
-      <p id="call-status">Preparando ventana de llamada…</p>
+      <h1 id="call-title">Antes de llamar</h1>
+      <p id="call-status">Comprobando dispositivos de audio…</p>
+
+      <div id="call-denied" class="call-denied" hidden>
+        <p>No hemos podido acceder a tu micrófono. Actívalo en los ajustes del sitio para Walcu y vuelve a intentarlo.</p>
+        <button type="button" id="call-reload" class="call-cta">Reintentar</button>
+      </div>
+
+      <div id="call-devices" class="call-devices" hidden>
+        <label class="call-field">
+          Micrófono
+          <select id="call-mic"></select>
+        </label>
+        <label class="call-field" id="call-speaker-field" hidden>
+          Altavoz
+          <select id="call-speaker"></select>
+        </label>
+        <div class="call-field">
+          Nivel de audio
+          <div class="call-meter"><div id="call-meter-fill" class="call-meter-fill"></div></div>
+        </div>
+        <button type="button" id="call-save" class="call-cta" disabled>Guardar preferencias</button>
+      </div>
     </section>
   </main>
   <script src="/call/index.js"></script>
