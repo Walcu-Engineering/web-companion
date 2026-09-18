@@ -20,6 +20,7 @@
 
   let device = null;
   let currentCall = null;
+  let callWindow = null;
   let button = null;
   let state = STATES.IDLE;
 
@@ -76,24 +77,6 @@
     return devices.map((d) => ({ deviceId: d.deviceId, label: d.label }));
   }
 
-  async function startPreCallFlow() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((t) => t.stop());
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const mics = dedupeByDeviceId(devices.filter((d) => d.kind === 'audioinput'));
-      const speakers = dedupeByDeviceId(devices.filter((d) => d.kind === 'audiooutput'));
-      window.parent.postMessage({
-        type: 'companion-open-modal',
-        mics: serializeDevices(mics),
-        speakers: serializeDevices(speakers),
-      }, '*');
-    } catch (err) {
-      console.error('[companion] getUserMedia failed', err);
-      window.parent.postMessage({ type: 'companion-open-modal', denied: true }, '*');
-    }
-  }
-
   async function applyAudioPrefs(prefs) {
     if (!prefs) return;
     try {
@@ -129,16 +112,37 @@
     }
   }
 
-  function onButtonClick() {
-    if (state === STATES.READY || state === STATES.ERROR) {
-      startPreCallFlow();
-    } else if (state === STATES.IN_CALL && currentCall) currentCall.disconnect();
+  function openCallWindow() {
+    try {
+      if (callWindow && !callWindow.closed) {
+        callWindow.focus();
+        return;
+      }
+
+      const openedWindow = window.open('', 'walcu-call', 'popup,width=400,height=640');
+      if (!openedWindow) throw new Error('popup blocked');
+
+      callWindow = openedWindow;
+      try {
+        if (openedWindow.location.href === 'about:blank') {
+          openedWindow.location.replace('/call');
+        }
+      } catch (_) {
+        // A named window owned by another origin cannot be inspected or navigated here.
+      }
+      openedWindow.focus();
+      button.title = 'Abrir llamada';
+      setState(STATES.READY);
+    } catch (err) {
+      console.error('[companion] could not open call window', err);
+      button.title = 'Permite ventanas emergentes para llamar';
+      setState(STATES.ERROR);
+    }
   }
 
-  window.addEventListener('message', (ev) => {
-    if (ev.source !== window.parent || !ev.data || ev.data.type !== 'companion-call-start') return;
-    startCall(ev.data.prefs);
-  });
+  function onButtonClick() {
+    openCallWindow();
+  }
 
   async function init() {
     const res = await fetch(`/public/config?public_id=${encodeURIComponent(public_id)}&token=${encodeURIComponent(token)}`);
